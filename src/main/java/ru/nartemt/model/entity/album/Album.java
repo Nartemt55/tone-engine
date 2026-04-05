@@ -1,0 +1,114 @@
+package ru.nartemt.model.entity.album;
+
+import ru.nartemt.model.entity.preset.Preset;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "albums")
+public class Album {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private long id;
+
+    @Column(name = "title", nullable = false, length = 30)
+    private String title;
+
+    @Column(name = "artist", nullable = false, length = 30)
+    private String artist;
+
+    @Column(name = "cover_url")
+    private String coverUrl;
+
+    @OneToOne
+    @JoinColumn(name = "preset_id", nullable = false)
+    private Preset preset;
+
+    @Column(name = "pro_tip")
+    private String proTip;
+
+    @Column(name = "target_brand")
+    private String targetBrand;
+
+    @Column(name = "target_shape")
+    private String targetShape;
+
+    @Column(name = "is_lo_fi")
+    private boolean isLoFi;
+
+    public Album() { }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public Preset getPreset() {
+        return preset;
+    }
+
+    public String getProTip() {
+        return proTip;
+    }
+
+    public String getTargetBrand() {
+        return targetBrand;
+    }
+
+    public String getTargetShape() {
+        return targetShape;
+    }
+
+    public boolean isLoFi() {
+        return isLoFi;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
+    }
+
+    public void setPreset(Preset preset) {
+        this.preset = preset;
+    }
+
+    public void setProTip(String proTip) {
+        this.proTip = proTip;
+    }
+
+    public void setTargetBrand(String targetBrand) {
+        this.targetBrand = targetBrand;
+    }
+
+    public void setTargetShape(String targetShape) {
+        this.targetShape = targetShape;
+    }
+
+    public void setLoFi(boolean loFi) {
+        isLoFi = loFi;
+    }
+}
