@@ -22,7 +22,6 @@
         <a class="brand-logo fw-bold" href="/home" style="letter-spacing: 3px;">TONE ENGINE</a>
         <div class="navbar-nav ms-auto">
             <a href="/home" class="nav-link">STORE</a>
-            <a href="/tone-advisor" class="nav-link">ADVISOR</a>
             <a href="/cart" class="nav-link active text-info"><i class="bi bi-cart-fill"></i>CART</a>
         </div>
     </div>
