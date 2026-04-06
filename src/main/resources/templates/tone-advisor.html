@@ -22,10 +22,17 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-black border-bottom border-info p-3">
     <div class="container-fluid">
-        <a class="brand-logo fw-bold" href="#" style="letter-spacing: 3px;">TONE ENGINE</a>
+        <a th:href="@{/home}" class="brand-logo fw-bold" style="letter-spacing: 3px;">TONE ENGINE</a>
         <div class="navbar-nav ms-auto">
-            <a href="/home" class="nav-link">STORE</a>
-            <a href="/tone-advisor" class="nav-link active">ADVISOR</a>
+            <a th:href="@{/home}" class="nav-link">
+                STORE
+            </a>
+            <a th:href="@{/tone-advisor}" class="nav-link active text-info">
+                TONE ADVISOR
+            </a>
+            <a th:href="@{/cart}" class="nav-link">
+                <i class="bi bi-cart4"></i>
+            </a>
         </div>
     </div>
 </nav>
@@ -34,143 +41,104 @@
 
         <!-- left (filters) -->
         <aside class="col-lg-3 col-xl-2">
-            <div class="rpg-panel h-100">
+            <form th:action="@{/tone-advisor}" method="get" id="filterForm" class="rpg-panel h-100">
+                <input type="hidden" name="albumId" th:value="${selectedAlbum?.id}">
                 <div class="mb-4">
                     <label class="form-label small">GENRE</label>
-                    <select class="form-select form-select-sm bg-dark text-white border-secondary">
-                        <option>Death Metal</option>
-                        <option>Grunge</option>
-                        <option>Rock</option>
+                    <select name="genre" class="form-select form-select-sm bg-dark text-white border-secondary"
+                            onchange="this.form.submit()">
+                        <option value="">All Genres</option>
+                        <option th:each="g : ${genres}"
+                                th:value="${g}"
+                                th:selected="${param.genre != null && param.genre[0] == g.name()}"
+                                th:text="${g.description}">
+                        </option>
                     </select>
                 </div>
 
                 <div class="mb-4">
-                    <label class="form-label small">BUDGET: <span class="text-info">$1350</span></label>
-                    <input type="range" class="form-range" min="800" max="1500" value="1350">
+
+                    <label class="form-label small">BUDGET: <span class="text-info" id="budgetValue" th:text="|$${param.budget ?: 1350}|">$1350</span></label>
+
+                    <input type="range" id="budgetRange" name="budget" class="form-range"
+                           min="300" max="3000" th:value="${param.budget ?: 1350}"
+                           oninput="document.getElementById('budgetValue').innerText = '$' + this.value"
+                           onchange="this.form.submit()">
                 </div>
 
-                <button class="btn btn-info w-100 fw-bold">FIND MATCHES</button>
                 <div class="mt-4">
-                    <a href="/home" class="btn btn-outline-info w-100 py-2 text-uppercase fw-bold" style="letter-spacing: 1px;">
+                    <a th:href="@{/home}" class="btn btn-outline-info w-100 py-2 text-uppercase fw-bold" style="letter-spacing: 1px;">
                         Back to main shop
                     </a>
                 </div>
-            </div>
+            </form>
         </aside>
 
         <!-- center (albums) -->
         <main class="col-lg-5 col-xl-7">
             <div class="rpg-panel">
                 <div class="d-flex justify-content-between mb-4 border-bottom border-secondary pb-2">
-                    <h5 class="text-uppercase mb-0">Matches Found: 45</h5>
+                    <h5 class="text-uppercase mb-0" th:text="|Matches Found: ${albums.size()}|">Matches Found: 0</h5>
                 </div>
 
                 <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-3">
-                    <!-- album card -->
-                    <c:forEach items="${albums}" var="album">
-                            <div class="col text-center">
-                                <div class="album-card">
-                                    <div class="bg-black rounded mb-2 overflow-hidden"
-                                         style="aspect-ratio: 1 / 1; width: 100%; height: auto;">
-
-                                        <img src="${album.imageUrl}"
-                                             alt="${album.title}"
-                                             class="w-100 h-100"
-                                             style="object-fit: cover;">
-                                    </div>
-
-                                    <div class="small fw-bold text-uppercase" style="letter-spacing: 1px;">
-                                        <c:out value="${album.artist}" />
-                                    </div>
-                                    <div class="small text-secondary">
-                                        <c:out value="${album.title}" />
-                                    </div>
+                    <!-- Заменяем c:forEach на th:each -->
+                    <div class="col text-center" th:each="album : ${albums}">
+                        <a th:href="@{/tone-advisor(albumId=${album.id}, genre=${param.genre}, budget=${param.budget})}" class="text-decoration-none">
+                            <div class="album-card" th:classappend="${selectedAlbum != null && selectedAlbum.id == album.id} ? 'active' : ''">
+                                <div class="bg-black rounded mb-2 overflow-hidden" style="aspect-ratio: 1 / 1; width: 100%;">
+                                    <img th:src="${album.coverUrl}" th:alt="${album.title}" class="w-100 h-100" style="object-fit: cover;">
                                 </div>
+                                <div class="small fw-bold text-uppercase text-white" th:text="${album.artist}">Artist</div>
+                                <div class="small text-secondary" th:text="${album.title}">Title</div>
                             </div>
-                        </c:forEach>
+                        </a>
+                    </div>
                 </div>
             </div>
         </main>
 
         <!-- right (sound details) -->
         <aside class="col-lg-4 col-xl-3">
-            <div class="rpg-panel h-100 d-flex flex-column">
-                <h6 class="text-info mb-4 small fw-bold text-uppercase">Gear Details: Nirvana</h6>
-
-                <!-- equipment / preset list -->
-                <div class="gear-slot d-flex align-items-center mb-3">
+            <div th:if="${selectedAlbum != null}" class="rpg-panel h-100 d-flex flex-column">
+                <h6 th:text="|Gear Details: ${selectedAlbum.artist}|" class="text-info mb-4 small fw-bold text-uppercase">Gear Details</h6>
+                <div th:each="gear : ${selectedAlbum.recommendedGear}" class="gear-slot d-flex align-items-center mb-3">
                     <div class="flex-grow-1">
-                        <div class="small" style="font-size: 0.65rem;">GUITAR</div>
-                        <div class="bg-black rounded border border-secondary overflow-hidden" style="width: 180px; aspect-ratio: 1 / 1;">
-                            <img src="https://res.cloudinary.com/ducqfcyoj/image/upload/v1774735626/hetGuitar_isrpp3.jpg    "
-                                alt="Gibson 70s Flying V"
-                                class="w-100 h-100"
-                                style="object-fit: contain; padding: 8px;">
-                          </div>
-                        <div class="small fw-bold">Gibson 70s Flying V CW</div>
-   
+                        <div th:text="${gear.type}" class="small text-secondary" style="font-size: 0.65rem;">TYPE</div>
+                        <div th:text="|${gear.brand} ${gear.model}|" class="small fw-bold">Brand Model</div>
                     </div>
-                    <div class="text-info fw-bold small">$1199</div>
+                    <div th:text="|$${gear.price}|" class="text-info fw-bold small">$0</div>
                 </div>
 
-                <div class="gear-slot d-flex align-items-center">
-
-                    <div class="flex-grow-1">
-                        <div class="small" style="font-size: 0.65rem;">PEDAL</div>
-                        <div class="small fw-bold">BOSS HM-2W</div>
-                    </div>
-                    <div class="text-info fw-bold small">$199</div>
-                </div>
-
-                <div class="eq-container">
+                <div class="eq-container mt-4">
                     <div class="eq-title">FREQUENCY SPECTRUM</div>
-
                     <div class="eq-wrapper">
                         <div class="eq-bar-container">
-                            <!-- 1. Sub-Bass (60Hz) -->
-                            <div class="eq-bar" style="height: 30%"></div>
-
-                            <!-- 2. Bass (150Hz) -->
-                            <div class="eq-bar" style="height: 50%"></div>
-
-                            <!-- 3. Low-Mids (400Hz) -->
-                            <div class="eq-bar" style="height: 85%"></div>
-
-                            <!-- 4. Mids (1kHz) - Центр -->
-                            <div class="eq-bar" style="height: 60%"></div>
-
-                            <!-- 5. High-Mids (2.4kHz) -->
-                            <div class="eq-bar" style="height: 95%"></div>
-
-                            <!-- 6. Presence (6kHz) -->
-                            <div class="eq-bar" style="height: 40%"></div>
-
-                            <!-- 7. Brilliance (15kHz) -->
-                            <div class="eq-bar" style="height: 75%"></div>
+                            <div th:each="freq : ${selectedAlbum.frequencies}" th:style="|height: ${freq}%|" class="eq-bar"></div>
                         </div>
-
-                        <!-- equalizer -->
                         <div class="eq-labels">
-                            <span>60</span>
-                            <span>150</span>
-                            <span>400</span>
-                            <span class="active-freq">1k</span>
-                            <span>2.4k</span>
-                            <span>6k</span>
-                            <span>15k</span>
+                            <span>60</span><span>150</span><span>400</span><span class="active-freq">1k</span><span>2.4k</span><span>6k</span><span>15k</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- price and button -->
-                <div class="mt-auto pt-4 border-top border-secondary mt-4">
+                <div class="mt-auto pt-4 border-top border-secondary">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <span class="small">TOTAL MATCH PRICE</span>
-                        <span class="text-warning fs-4 fw-bold">$1398.00</span>
+                        <span th:text="|$${selectedAlbum.totalPrice}|" class="text-warning fs-4 fw-bold">$0.00</span>
                     </div>
-                    <p class="text-success small mb-3"><i class="bi bi-shield-check me-1"></i> Perfect match for Grunge</p>
-                    <button class="btn btn-success w-100 py-2 fw-bold">ADD FULL SET TO CART</button>
+                    <p class="text-success small mb-3">
+                        <i th:text="${selectedAlbum.genre}" class="bi bi-shield-check me-1"></i> Perfect match for <span>Genre</span>
+                    </p>
+                    <form th:action="@{/cart/add-set}" method="post">
+                        <input th:value="${selectedAlbum.id}" type="hidden" name="albumId">
+                        <button class="btn btn-success w-100 py-2 fw-bold">ADD FULL SET TO CART</button>
+                    </form>
                 </div>
+            </div>
+
+            <div th:unless="${selectedAlbum != null}" class="rpg-panel h-100 d-flex align-items-center justify-content-center">
+                <p class="text-secondary italic">Select an album to analyze tone</p>
             </div>
         </aside>
 

@@ -19,6 +19,10 @@ public class Album {
     @Column(name = "artist", nullable = false, length = 30)
     private String artist;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "genre", length = 30)
+    private Genre genre;
+
     @Column(name = "cover_url")
     private String coverUrl;
 
@@ -72,6 +76,10 @@ public class Album {
         return targetShape;
     }
 
+    public Genre getGenre() {
+        return genre;
+    }
+
     public boolean isLoFi() {
         return isLoFi;
     }
@@ -110,5 +118,9 @@ public class Album {
 
     public void setLoFi(boolean loFi) {
         isLoFi = loFi;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
     }
 }

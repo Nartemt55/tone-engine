@@ -20,7 +20,7 @@ public class Guitar extends MusicalEquipment {
     @Column(name = "body_wood", length = 20)
     private String bodyWood;
 
-    @Column(name = "pickup_config", nullable = false)
+    @Column(name = "pickup_config")
     @Enumerated(EnumType.STRING)
     private PickupConfig pickupConfig;
 
