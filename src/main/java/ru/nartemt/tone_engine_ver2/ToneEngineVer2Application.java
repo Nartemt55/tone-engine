@@ -9,5 +9,4 @@ public class ToneEngineVer2Application {
 	public static void main(String[] args) {
 		SpringApplication.run(ToneEngineVer2Application.class, args);
 	}
-
 }
