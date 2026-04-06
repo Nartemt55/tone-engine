@@ -88,7 +88,6 @@
 
                                     <div class="price-tag">$${gear.price}</div>
                                     <form action="${pageContext.request.contextPath}/cart/add" method="post" class="m-0">
-                                        <%-- Передаем ID товара скрытым полем --%>
                                         <input type="hidden" name="id" value="${gear.id}">
 
                                         <button type="submit" class="btn btn-sm btn-outline-success">
