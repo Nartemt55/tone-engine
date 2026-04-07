@@ -1,43 +1,38 @@
 package ru.nartemt.tone_engine_ver2.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import ru.nartemt.tone_engine_ver2.dao.GuitarsDao;
+import ru.nartemt.tone_engine_ver2.repository.GuitarRepository;
 import ru.nartemt.tone_engine_ver2.model.entity.MusicalEquipment;
 import ru.nartemt.tone_engine_ver2.model.entity.guitar.Guitar;
 
 import jakarta.transaction.Transactional;
+import ru.nartemt.tone_engine_ver2.service.equipment.ProductProvider;
+
 import java.util.List;
 
 @Service
 public class GuitarService implements ProductProvider {
-    private final GuitarsDao guitarsDao;
+    private final GuitarRepository guitarRepository;
 
     @Autowired
-    public GuitarService(GuitarsDao guitarsDao) {
-        this.guitarsDao = guitarsDao;
+    public GuitarService(GuitarRepository guitarRepository) {
+        this.guitarRepository = guitarRepository;
     }
 
     @Override
     @Transactional
-    public List<Guitar> getProducts(String sort) {
-        List<Guitar> guitars = guitarsDao.findAll();
-
-        if (sort == null || sort.equals("desc")) {
-            guitars.sort(MusicalEquipment.BY_PRICE_DESC);
-            return guitars;
-        }
-        if (sort.equals("asc")) {
-            guitars.sort(MusicalEquipment.BY_PRICE_ASC);
-            return guitars;
-        }
-        return guitars;
+    public List<Guitar> findAllSorted(String sort) {
+        if ("asc".equals(sort))
+            return guitarRepository.findAll(Sort.by(Sort.Direction.ASC));
+        return guitarRepository.findAll(Sort.by(Sort.Direction.DESC));
     }
 
     @Override
     @Transactional
     public MusicalEquipment findById(long id) {
-        return guitarsDao.findById(id);
+        return guitarRepository.findById(id).orElse(null);
     }
 
     @Override

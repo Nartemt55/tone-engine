@@ -3,6 +3,7 @@ package ru.nartemt.tone_engine_ver2.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.nartemt.tone_engine_ver2.model.entity.MusicalEquipment;
+import ru.nartemt.tone_engine_ver2.service.equipment.ProductProvider;
 
 import java.util.ArrayList;
 import java.util.List;
