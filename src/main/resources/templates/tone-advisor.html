@@ -42,7 +42,7 @@
         <!-- left (filters) -->
         <aside class="col-lg-3 col-xl-2">
             <form th:action="@{/tone-advisor}" method="get" id="filterForm" class="rpg-panel h-100">
-                <input type="hidden" name="albumId" th:value="${selectedAlbum?.id}">
+                <input type="hidden" name="albumId" th:value="${selectedAlbum != null ? selectedAlbum.album.id : ''}">
                 <div class="mb-4">
                     <label class="form-label small">GENRE</label>
                     <select name="genre" class="form-select form-select-sm bg-dark text-white border-secondary"
@@ -85,7 +85,7 @@
                     <!-- Заменяем c:forEach на th:each -->
                     <div class="col text-center" th:each="album : ${albums}">
                         <a th:href="@{/tone-advisor(albumId=${album.id}, genre=${param.genre}, budget=${param.budget})}" class="text-decoration-none">
-                            <div class="album-card" th:classappend="${selectedAlbum != null && selectedAlbum.id == album.id} ? 'active' : ''">
+                            <div class="album-card" th:classappend="${selectedAlbum != null && selectedAlbum.album.id == album.id} ? 'active' : ''">
                                 <div class="bg-black rounded mb-2 overflow-hidden" style="aspect-ratio: 1 / 1; width: 100%;">
                                     <img th:src="${album.coverUrl}" th:alt="${album.title}" class="w-100 h-100" style="object-fit: cover;">
                                 </div>
@@ -101,10 +101,10 @@
         <!-- right (sound details) -->
         <aside class="col-lg-4 col-xl-3">
             <div th:if="${selectedAlbum != null}" class="rpg-panel h-100 d-flex flex-column">
-                <h6 th:text="|Gear Details: ${selectedAlbum.artist}|" class="text-info mb-4 small fw-bold text-uppercase">Gear Details</h6>
-                <div th:each="gear : ${selectedAlbum.recommendedGear}" class="gear-slot d-flex align-items-center mb-3">
+                <h6 th:text="|Gear Details: ${selectedAlbum.album.artist}|">Gear Details</h6>
+                <div th:each="gear : ${selectedAlbum.gear}" class="gear-slot d-flex align-items-center mb-3">
                     <div class="flex-grow-1">
-                        <div th:text="${gear.type}" class="small text-secondary" style="font-size: 0.65rem;">TYPE</div>
+                        <div th:text="${gear.equipmentType}" class="small text-secondary" style="font-size: 0.65rem;">TYPE</div>
                         <div th:text="|${gear.brand} ${gear.model}|" class="small fw-bold">Brand Model</div>
                     </div>
                     <div th:text="|$${gear.price}|" class="text-info fw-bold small">$0</div>
@@ -128,10 +128,10 @@
                         <span th:text="|$${selectedAlbum.totalPrice}|" class="text-warning fs-4 fw-bold">$0.00</span>
                     </div>
                     <p class="text-success small mb-3">
-                        <i th:text="${selectedAlbum.genre}" class="bi bi-shield-check me-1"></i> Perfect match for <span>Genre</span>
+                        <i th:text="${selectedAlbum.album.genre.description}" class="bi bi-shield-check me-1"></i> Perfect match for <span>Genre</span>
                     </p>
                     <form th:action="@{/cart/add-set}" method="post">
-                        <input th:value="${selectedAlbum.id}" type="hidden" name="albumId">
+                        <input th:value="${selectedAlbum.album.id}" type="hidden" name="albumId">
                         <button class="btn btn-success w-100 py-2 fw-bold">ADD FULL SET TO CART</button>
                     </form>
                 </div>

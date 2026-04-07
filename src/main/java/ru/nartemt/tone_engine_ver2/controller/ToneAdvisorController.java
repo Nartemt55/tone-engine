@@ -33,12 +33,12 @@ public class ToneAdvisorController {
     @GetMapping("/tone-advisor")
     public String getToneAdvisorPage(Model model,
                                      @RequestParam(required = false) Genre genre,
-                                     @RequestParam(required = false) Integer budget,
-                                     @RequestParam(required = false) BigDecimal albumId) {
+                                     @RequestParam(required = false, defaultValue = "1350") BigDecimal budget,
+                                     @RequestParam(required = false) Long albumId) {
 
 
         if (albumId != null) {
-            AdvisorResponceDto dto = toneAdvisorService.getRecommendations(budget, albumId);
+            AdvisorResponceDto dto = toneAdvisorService.getRecommendations(albumId, budget);
             model.addAttribute("selectedAlbum", dto);
         }
 

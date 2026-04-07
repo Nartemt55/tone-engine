@@ -28,6 +28,8 @@ public class ToneAdvisorService {
     }
 
     public AdvisorResponceDto getRecommendations(long albumId, BigDecimal budget) {
+        Album album = albumService.findById(albumId)
+                .orElseThrow(() -> new EntityNotFoundException("Album not found"));
         Preset preset = albumService.getPresetByAlbumId(albumId)
                 .orElseThrow(() -> new EntityNotFoundException("Album not found"));
 
@@ -44,6 +46,8 @@ public class ToneAdvisorService {
         BigDecimal finalPrice = gears.stream()
                 .map(MusicalEquipment::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return new AdvisorResponceDto(album, gears, getFrequencyBars(preset), finalPrice);
     }
 
     private Optional<? extends MusicalEquipment> findTopMatch(Preset preset, BigDecimal budget,
