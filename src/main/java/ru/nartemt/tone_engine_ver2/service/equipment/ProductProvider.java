@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface ProductProvider<T> {
     boolean isSupport(String equipmentType);
-    double calculateScore(T equipment, Preset preset);
     List<T> findMatches(Preset preset, BigDecimal maxPrice);
 }

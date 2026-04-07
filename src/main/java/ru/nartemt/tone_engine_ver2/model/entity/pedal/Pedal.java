@@ -16,6 +16,9 @@ public class Pedal extends MusicalEquipment {
     @Column(name = "gain_level", nullable = false)
     private int gainLevel;
 
+    @Column(name = "base_mid_responce")
+    private int baseMidResponce;
+
     public Pedal() {
     }
 
@@ -27,11 +30,19 @@ public class Pedal extends MusicalEquipment {
         return gainLevel;
     }
 
+    public int getBaseMidResponce() {
+        return baseMidResponce;
+    }
+
     public void setEffectType(EffectType effectType) {
         this.effectType = effectType;
     }
 
     public void setGainLevel(int gainLevel) {
         this.gainLevel = gainLevel;
+    }
+
+    public void setBaseMidResponce(int baseMidResponce) {
+        this.baseMidResponce = baseMidResponce;
     }
 }

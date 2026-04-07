@@ -2,10 +2,12 @@ package ru.nartemt.tone_engine_ver2.service.base;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
 import java.util.List;
 import java.util.Optional;
 
-public abstract class AbstractBaseService<E, ID, R extends JpaRepository<E, ID>>
+public abstract class AbstractBaseService<E, ID, R extends JpaRepository<E, ID> & JpaSpecificationExecutor<E>>
     implements BaseService<E, ID> {
 
     protected final R repository;

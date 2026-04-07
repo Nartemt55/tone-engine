@@ -17,6 +17,9 @@ public class Amplifier extends MusicalEquipment {
     @Column(name = "warmth_score", nullable = false)
     private int warmthScore;
 
+    @Column(name = "output_power")
+    private int outputPower;
+
     public Amplifier() {
     }
 
@@ -28,11 +31,19 @@ public class Amplifier extends MusicalEquipment {
         return warmthScore;
     }
 
+    public int getOutputPower() {
+        return outputPower;
+    }
+
     public void setAmplifierType(AmplifierType amplifierType) {
         this.amplifierType = amplifierType;
     }
 
     public void setWarmthScore(int warmthScore) {
         this.warmthScore = warmthScore;
+    }
+
+    public void setOutputPower(int outputPower) {
+        this.outputPower = outputPower;
     }
 }

@@ -55,6 +55,30 @@ public class Preset {
         return warmthTarget;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public PickupConfig getReqPickup() {
+        return reqPickup;
+    }
+
+    public int getFreqLow() {
+        return freqLow;
+    }
+
+    public int getFreqMid() {
+        return freqMid;
+    }
+
+    public int getFreqHigh() {
+        return freqHigh;
+    }
+
+    public Tuning getReqTuning() {
+        return reqTuning;
+    }
+
     public void setMinGainRequired(int minGainRequired) {
         this.minGainRequired = minGainRequired;
     }
@@ -65,5 +89,29 @@ public class Preset {
 
     public void setWarmthTarget(int warmthTarget) {
         this.warmthTarget = warmthTarget;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setReqPickup(PickupConfig reqPickup) {
+        this.reqPickup = reqPickup;
+    }
+
+    public void setFreqLow(int freqLow) {
+        this.freqLow = freqLow;
+    }
+
+    public void setFreqMid(int freqMid) {
+        this.freqMid = freqMid;
+    }
+
+    public void setFreqHigh(int freqHigh) {
+        this.freqHigh = freqHigh;
+    }
+
+    public void setReqTuning(Tuning reqTuning) {
+        this.reqTuning = reqTuning;
     }
 }

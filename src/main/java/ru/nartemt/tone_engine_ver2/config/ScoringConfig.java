@@ -22,6 +22,7 @@ public class ScoringConfig {
         private Frequency frequency = new Frequency();
         private Bonus bonus = new Bonus();
         private double warmth;
+        private double outputPower;
 
         public Frequency getFrequency() {
             return frequency;
@@ -45,6 +46,14 @@ public class ScoringConfig {
 
         public void setWarmth(double warmth) {
             this.warmth = warmth;
+        }
+
+        public double getOutputPower() {
+            return outputPower;
+        }
+
+        public void setOutputPower(double outputPower) {
+            this.outputPower = outputPower;
         }
 
         public static class Frequency {
@@ -76,6 +85,9 @@ public class ScoringConfig {
                 this.low = low;
             }
         }
+
+
+
 
 
         public static class Bonus {

@@ -8,7 +8,6 @@ import java.util.Optional;
 public interface BaseService<E, ID> {
     Optional<E> findById(ID id);
     List<E> findAll();
-    List<E> findAllSorted(String sortBy, String direction);
     E save(E entity);
     void delete(ID id);
 }
