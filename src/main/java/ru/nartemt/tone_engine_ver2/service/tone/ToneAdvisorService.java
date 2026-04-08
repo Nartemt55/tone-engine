@@ -1,4 +1,4 @@
-package ru.nartemt.tone_engine_ver2.service;
+package ru.nartemt.tone_engine_ver2.service.tone;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +7,9 @@ import ru.nartemt.tone_engine_ver2.model.dto.AdvisorResponceDto;
 import ru.nartemt.tone_engine_ver2.model.entity.MusicalEquipment;
 import ru.nartemt.tone_engine_ver2.model.entity.album.Album;
 import ru.nartemt.tone_engine_ver2.model.entity.preset.Preset;
-import ru.nartemt.tone_engine_ver2.service.equipment.ProductProvider;
+import ru.nartemt.tone_engine_ver2.repository.EquipmentRepository;
+import ru.nartemt.tone_engine_ver2.service.album.AlbumService;
+import ru.nartemt.tone_engine_ver2.service.equipment.AbstractEquipmentService;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -18,13 +20,13 @@ import java.util.Optional;
 public class ToneAdvisorService {
 
     private final AlbumService albumService;
-    private final List<ProductProvider<? extends MusicalEquipment>> equipmentProviders;
+    private final List<AbstractEquipmentService<MusicalEquipment, EquipmentRepository>> equipmentService;
 
     @Autowired
     public ToneAdvisorService(AlbumService albumService,
-                              List<ProductProvider<? extends MusicalEquipment>> equipmentProviders) {
+                              List<AbstractEquipmentService<MusicalEquipment, EquipmentRepository>> equipmentService) {
         this.albumService = albumService;
-        this.equipmentProviders = equipmentProviders;
+        this.equipmentService = equipmentService;
     }
 
     public AdvisorResponceDto getRecommendations(long albumId, BigDecimal budget) {
@@ -53,11 +55,11 @@ public class ToneAdvisorService {
     private Optional<? extends MusicalEquipment> findTopMatch(Preset preset, BigDecimal budget,
                                                               String type) {
 
-        return equipmentProviders.stream()
+        return equipmentService.stream()
                 .filter(p -> p.isSupport(type))
-                .map(p -> p.findMatches(preset, budget))
+                .map(p -> p.findEquipmentByPresetAndBudget(preset, budget))
                 .filter(matches -> !matches.isEmpty())
-                .map(matches -> matches.get(0))
+                .map(List::getFirst)
                 .findFirst();
     }
 

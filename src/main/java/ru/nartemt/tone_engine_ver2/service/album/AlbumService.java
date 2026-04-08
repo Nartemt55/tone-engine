@@ -1,5 +1,6 @@
-package ru.nartemt.tone_engine_ver2.service;
+package ru.nartemt.tone_engine_ver2.service.album;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.nartemt.tone_engine_ver2.model.entity.preset.Preset;
@@ -7,7 +8,6 @@ import ru.nartemt.tone_engine_ver2.repository.AlbumRepository;
 import ru.nartemt.tone_engine_ver2.model.entity.album.Album;
 import ru.nartemt.tone_engine_ver2.service.base.AbstractBaseService;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service

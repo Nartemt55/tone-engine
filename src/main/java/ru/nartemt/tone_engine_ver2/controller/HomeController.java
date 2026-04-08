@@ -6,18 +6,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.nartemt.tone_engine_ver2.model.entity.MusicalEquipment;
-import ru.nartemt.tone_engine_ver2.service.ProductService;
+import ru.nartemt.tone_engine_ver2.service.equipment.EquipmentCatalogService;
 
 import java.util.List;
 
 @Controller
 public class HomeController {
 
-    private final ProductService productService;
+    private final EquipmentCatalogService catalogService;
 
     @Autowired
-    public HomeController(ProductService productService) {
-        this.productService = productService;
+    public HomeController(EquipmentCatalogService catalogService) {
+        this.catalogService = catalogService;
     }
 
     @RequestMapping("/")
@@ -30,7 +30,8 @@ public class HomeController {
                               @RequestParam(required = false) String type,
                               @RequestParam(required = false) String sort) {
 
-        List<MusicalEquipment> products = productService.getRequiredEquipment(type, sort);
+        // TODO : use DTO instead of entities
+        List<MusicalEquipment> products = catalogService.findEquipmentByTypeAndSort(type, sort);
         model.addAttribute("products", products);
         return "index";
     }

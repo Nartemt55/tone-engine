@@ -42,15 +42,15 @@
             <div class="rpg-panel">
                 <div class="d-flex justify-content-between align-items-center mb-4 border-bottom border-secondary pb-3">
                     <h4 class="cormorant-unicase-regular mb-0 text-uppercase fw-bold">Current Loadout</h4>
-                    <span th:text="|${itemsAmount} Items|" class="badge bg-secondary"></span>
+                    <span th:text="|${cart.itemsAmount} Items|" class="badge bg-secondary"></span>
                 </div>
 
-                <div th:if="${cart == null || cart.isEmpty()}" class="text-center py-5">
+                <div th:if="${cart == null || cart.cartItems.isEmpty()}" class="text-center py-5">
                     <p class="text-white-50">Cart is empty.</p>
                     <a th:href="@{/home}" class="btn btn-outline-info btn-sm">Back to Store</a>
                 </div>
 
-                <div th:each="item : ${cart}" class="gear-slot d-flex align-items-center justify-content-between mb-3">
+                <div th:each="item : ${cart.cartItems}" class="gear-slot d-flex align-items-center justify-content-between mb-3">
                     <div class="d-flex align-items-center" style="min-width: 250px;">
                         <div class="bg-dark rounded p-1 me-3" style="height: 60px; width: 60px; border: 1px solid var(--border-color);">
                             <img th:src="${item.imageUrl}" class="img-fluid h-100 w-100 object-fit-contain">
@@ -93,7 +93,7 @@
                     </div>
 
                 </div>
-                <div th:if="${cart != null && !cart.isEmpty()}" class="text-center py-5">
+                <div th:if="${cart != null && !cart.cartItems.isEmpty()}" class="text-center py-5">
                     <form th:action="@{/cart/clear}" method="post" class="m-0">
                         <button type="submit" class="btn btn-outline-danger btn-sm d-flex align-items-center gap-2 px-3 py-2"
                                 style="border-radius: 8px; transition: 0.3s;">
@@ -110,9 +110,9 @@
                 <h5 class="text-uppercase mb-4 border-bottom border-secondary pb-2">Summary</h5>
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <span class="h5 mb-0">Total</span>
-                    <span th:text="|$${totalPrice != null ? totalPrice : 0}|" class="price-tag" style="font-size: 1.8rem;">$0</span>
+                    <span th:text="|$${cart.totalPrice != null ? cart.totalPrice : 0}|" class="price-tag" style="font-size: 1.8rem;">$0</span>
                 </div>
-                <button th:disabled="${cartItems == null || cartItems.isEmpty()}" class="btn btn-outline-info w-100 py-3 text-uppercase fw-bold">
+                <button th:disabled="${cart == null || cart.cartItems.isEmpty()}" class="btn btn-outline-info w-100 py-3 text-uppercase fw-bold">
                     Buy
                 </button>
             </div>

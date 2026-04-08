@@ -9,7 +9,6 @@ import ru.nartemt.tone_engine_ver2.model.entity.pedal.Pedal;
 
 @Service
 public class PedalService extends AbstractEquipmentService<Pedal, PedalRepository> {
-
     @Autowired
     public PedalService(PedalRepository pedalRepository, ScoringConfig scoringConfig) {
         super(pedalRepository, Pedal.class, scoringConfig);
@@ -25,7 +24,7 @@ public class PedalService extends AbstractEquipmentService<Pedal, PedalRepositor
         else
             score -= 50.0;
 
-        double midMatch = 100 - Math.abs(pedal.getBaseMidResponce() - pedal.getBaseMidResponce());
+        double midMatch = 100 - Math.abs(preset.getFreqMid() - pedal.getBaseMidResponce());
         score += midMatch * config.getFrequency().getMid();
 
         return score;

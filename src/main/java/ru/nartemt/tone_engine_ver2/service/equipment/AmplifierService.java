@@ -1,18 +1,13 @@
 package ru.nartemt.tone_engine_ver2.service.equipment;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.nartemt.tone_engine_ver2.config.ScoringConfig;
 import ru.nartemt.tone_engine_ver2.model.entity.amplifier.AmplifierType;
 import ru.nartemt.tone_engine_ver2.model.entity.preset.Preset;
 import ru.nartemt.tone_engine_ver2.repository.AmplifierRepository;
-import ru.nartemt.tone_engine_ver2.model.entity.MusicalEquipment;
 import ru.nartemt.tone_engine_ver2.model.entity.amplifier.Amplifier;
 
-import jakarta.transaction.Transactional;
-
-import java.util.List;
 
 @Service
 public class AmplifierService extends AbstractEquipmentService<Amplifier, AmplifierRepository> {

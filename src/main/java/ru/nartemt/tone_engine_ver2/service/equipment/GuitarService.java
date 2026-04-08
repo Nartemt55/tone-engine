@@ -13,7 +13,6 @@ public class GuitarService extends AbstractEquipmentService<Guitar, GuitarReposi
     public GuitarService(GuitarRepository guitarRepository, ScoringConfig scoringConfig) {
         super(guitarRepository, Guitar.class, scoringConfig);
     }
-
     @Override
     public double calculateScore(Guitar guitar, Preset preset) {
         double score = 0;
@@ -30,7 +29,4 @@ public class GuitarService extends AbstractEquipmentService<Guitar, GuitarReposi
 
         return score;
     }
-
-
-
 }

@@ -2,24 +2,23 @@ package ru.nartemt.tone_engine_ver2.model.dto;
 
 import java.math.BigDecimal;
 
-public class CartItem {
+public class CartItemDto {
 
     private long id;
     private String brand;
     private String model;
     private String imageUrl;
     private BigDecimal price;
-    private int quantity;
+    private int quantity = 1;
 
-    public CartItem() { }
+    public CartItemDto() { }
 
-    public CartItem(long id, String brand, String model, String imageUrl, BigDecimal price) {
+    public CartItemDto(long id, String brand, String model, String imageUrl, BigDecimal price) {
         this.id = id;
         this.brand = brand;
         this.model = model;
         this.imageUrl = imageUrl;
         this.price = price;
-        this.quantity = 1;
     }
 
     public long getId() {
@@ -76,13 +75,5 @@ public class CartItem {
 
     public BigDecimal subTotal() {
         return price.multiply(BigDecimal.valueOf(quantity));
-    }
-
-    public void increment() {
-        this.quantity++;
-    }
-
-    public void decrement() {
-        this.quantity--;
     }
 }

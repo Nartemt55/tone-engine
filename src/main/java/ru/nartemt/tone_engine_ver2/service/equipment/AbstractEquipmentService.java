@@ -14,25 +14,24 @@ import java.util.List;
 
 public abstract class AbstractEquipmentService<E extends MusicalEquipment,
         R extends JpaRepository<E, Long> & JpaSpecificationExecutor<E>>
-        extends AbstractBaseService<E, Long, R>
-        implements ProductProvider<E> {
+        extends AbstractBaseService<E, Long, R> {
 
     private final Class<E> entityClass;
     protected final ScoringConfig scoringConfig;
 
-    protected AbstractEquipmentService(R repository, Class<E> entityClass, ScoringConfig scoringConfig) {
+    public AbstractEquipmentService(R repository, Class<E> entityClass, ScoringConfig scoringConfig) {
         super(repository);
         this.entityClass = entityClass;
         this.scoringConfig = scoringConfig;
     }
 
-    @Override
+    public abstract double calculateScore(E equipment, Preset preset);
+
     public boolean isSupport(String equipmentType) {
         return entityClass.getSimpleName().equalsIgnoreCase(equipmentType);
     }
 
-    @Override
-    public List<E> findMatches(Preset preset, BigDecimal budget) {
+    public List<E> findEquipmentByPresetAndBudget(Preset preset, BigDecimal budget) {
         Specification<E> spec = Specification.allOf(
                 EquipmentSpecification.isInStock(),
                 EquipmentSpecification.priceLessThanAllBudget(budget)
@@ -42,9 +41,8 @@ public abstract class AbstractEquipmentService<E extends MusicalEquipment,
                 .sorted((e1, e2) -> Double.compare(calculateScore(e2, preset), calculateScore(e1, preset)))
                 .limit(5)
                 .toList();
-
     }
 
-    public abstract double calculateScore(E equipment, Preset preset);
+
 
 }

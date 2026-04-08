@@ -8,10 +8,6 @@ import java.util.Comparator;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "musical_equipment")
 public abstract class MusicalEquipment {
-
-    public static final Comparator<MusicalEquipment> BY_PRICE_ASC = Comparator.comparing(MusicalEquipment::getPrice);
-    public static final Comparator<MusicalEquipment> BY_PRICE_DESC = BY_PRICE_ASC.reversed();
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

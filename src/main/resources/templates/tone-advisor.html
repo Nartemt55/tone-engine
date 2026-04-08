@@ -30,7 +30,7 @@
             <a th:href="@{/tone-advisor}" class="nav-link active text-info">
                 TONE ADVISOR
             </a>
-            <a th:href="@{/cart}" class="nav-link">
+            <a th:href="@{/cartDto}" class="nav-link">
                 <i class="bi bi-cart4"></i>
             </a>
         </div>
@@ -130,7 +130,7 @@
                     <p class="text-success small mb-3">
                         <i th:text="${selectedAlbum.album.genre.description}" class="bi bi-shield-check me-1"></i> Perfect match for <span>Genre</span>
                     </p>
-                    <form th:action="@{/cart/add-set}" method="post">
+                    <form th:action="@{/cartDto/add-set}" method="post">
                         <input th:value="${selectedAlbum.album.id}" type="hidden" name="albumId">
                         <button class="btn btn-success w-100 py-2 fw-bold">ADD FULL SET TO CART</button>
                     </form>
