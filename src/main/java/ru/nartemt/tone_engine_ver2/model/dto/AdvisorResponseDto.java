@@ -6,18 +6,16 @@ import ru.nartemt.tone_engine_ver2.model.entity.album.Album;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class AdvisorResponceDto {
+public class AdvisorResponseDto {
 
     private Album album;
-    private List<MusicalEquipment> gear;
+    private List<MusicalEquipment> equipmentList;
     private List<Integer> frequencies;
     private BigDecimal totalPrice;
 
-    public AdvisorResponceDto(Album album, List<MusicalEquipment> gear,
-                              List<Integer> frequencies, BigDecimal totalPrice) {
-
+    public AdvisorResponseDto(Album album, List<MusicalEquipment> equipmentList, List<Integer> frequencies, BigDecimal totalPrice) {
         this.album = album;
-        this.gear = gear;
+        this.equipmentList = equipmentList;
         this.frequencies = frequencies;
         this.totalPrice = totalPrice;
     }
@@ -30,12 +28,12 @@ public class AdvisorResponceDto {
         this.album = album;
     }
 
-    public List<MusicalEquipment> getGear() {
-        return gear;
+    public List<MusicalEquipment> getEquipmentList() {
+        return equipmentList;
     }
 
-    public void setGear(List<MusicalEquipment> gear) {
-        this.gear = gear;
+    public void setEquipmentList(List<MusicalEquipment> equipmentList) {
+        this.equipmentList = equipmentList;
     }
 
     public List<Integer> getFrequencies() {

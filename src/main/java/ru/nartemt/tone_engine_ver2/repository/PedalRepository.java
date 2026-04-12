@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import ru.nartemt.tone_engine_ver2.model.entity.pedal.Pedal;
 
 @Repository
-public interface PedalRepository extends JpaRepository<Pedal, Long>, JpaSpecificationExecutor<Pedal> {
+public interface PedalRepository extends EquipmentRepository<Pedal> {
     
 }

@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "tone-engine")
+@ConfigurationProperties(prefix = "tone-advisor")
 public class ScoringConfig {
 
     private Scoring scoring = new Scoring();
@@ -21,6 +21,7 @@ public class ScoringConfig {
 
         private Frequency frequency = new Frequency();
         private Bonus bonus = new Bonus();
+        private Balance balance = new Balance();
         private double warmth;
         private double outputPower;
 
@@ -38,6 +39,14 @@ public class ScoringConfig {
 
         public void setBonus(Bonus bonus) {
             this.bonus = bonus;
+        }
+
+        public Balance getBalance() {
+            return balance;
+        }
+
+        public void setBalance(Balance balance) {
+            this.balance = balance;
         }
 
         public double getWarmth() {
@@ -87,9 +96,6 @@ public class ScoringConfig {
         }
 
 
-
-
-
         public static class Bonus {
             private double gainMatch;
             private double pickupMatch;
@@ -108,6 +114,36 @@ public class ScoringConfig {
 
             public void setPickupMatch(double pickupMatch) {
                 this.pickupMatch = pickupMatch;
+            }
+        }
+
+        public static class Balance {
+            private double guitar;
+            private double amplifier;
+            private double pedal;
+
+            public double getGuitar() {
+                return guitar;
+            }
+
+            public void setGuitar(double guitar) {
+                this.guitar = guitar;
+            }
+
+            public double getAmplifier() {
+                return amplifier;
+            }
+
+            public void setAmplifier(double amplifier) {
+                this.amplifier = amplifier;
+            }
+
+            public double getPedal() {
+                return pedal;
+            }
+
+            public void setPedal(double pedal) {
+                this.pedal = pedal;
             }
         }
     }

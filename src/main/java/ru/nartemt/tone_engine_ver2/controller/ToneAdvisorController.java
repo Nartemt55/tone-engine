@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.nartemt.tone_engine_ver2.model.dto.AdvisorResponceDto;
 import ru.nartemt.tone_engine_ver2.model.entity.album.Genre;
 import ru.nartemt.tone_engine_ver2.service.album.AlbumService;
 import ru.nartemt.tone_engine_ver2.service.tone.ToneAdvisorService;
@@ -30,12 +29,8 @@ public class ToneAdvisorController {
                                      @RequestParam(required = false, defaultValue = "1350") BigDecimal budget,
                                      @RequestParam(required = false) Long albumId) {
 
-
-        if (albumId != null) {
-            AdvisorResponceDto dto = toneAdvisorService.getRecommendations(albumId, budget);
-            model.addAttribute("selectedAlbum", dto);
-        }
-
+        if (albumId != null)
+            model.addAttribute("advisorResponse", toneAdvisorService.getAdvisorResponseDto(albumId, budget));
         model.addAttribute("genres", Genre.values());
         model.addAttribute("albums", albumService.findAll());
 

@@ -4,6 +4,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import ru.nartemt.tone_engine_ver2.mapper.ProductShortMapper;
+import ru.nartemt.tone_engine_ver2.model.dto.ProductShortDto;
+import ru.nartemt.tone_engine_ver2.model.entity.EquipmentType;
 import ru.nartemt.tone_engine_ver2.model.entity.MusicalEquipment;
 import ru.nartemt.tone_engine_ver2.repository.EquipmentRepository;
 import ru.nartemt.tone_engine_ver2.repository.specification.EquipmentSpecification;
@@ -13,18 +16,23 @@ import java.util.List;
 @Service
 public class EquipmentCatalogService {
 
-    private final EquipmentRepository equipmentRepository;
+    private final EquipmentRepository<MusicalEquipment> equipmentRepository;
+    private final ProductShortMapper mapper;
     @Autowired
-    public EquipmentCatalogService(EquipmentRepository equipmentRepository) {
+    public EquipmentCatalogService(EquipmentRepository<MusicalEquipment> equipmentRepository, ProductShortMapper mapper) {
         this.equipmentRepository = equipmentRepository;
+        this.mapper = mapper;
     }
 
-    public List<MusicalEquipment> findEquipmentByTypeAndSort(String type, String sort) {
-        Specification<MusicalEquipment> spec = Specification.allOf(EquipmentSpecification.orderBy(sort));
-        return equipmentRepository.findAll(spec)
-                .stream()
-                .filter(e -> e.getEquipmentType().toString().equalsIgnoreCase(type))
-                .toList();
+    private List<MusicalEquipment> findEquipmentByTypeAndSort(EquipmentType type, String sort) {
+        Specification<MusicalEquipment> spec = Specification.allOf(
+                EquipmentSpecification.orderBy(sort),
+                EquipmentSpecification.hasType(type)
+        );
+        List<MusicalEquipment> equipmentList = equipmentRepository.findAll(spec);
+        if (equipmentList.isEmpty())
+            throw new EntityNotFoundException("Equipment not found");
+        return equipmentList;
     }
 
     public MusicalEquipment findById(Long id) {
@@ -32,5 +40,9 @@ public class EquipmentCatalogService {
             return equipmentRepository.findById(id).orElseThrow();
         else
             throw new NullPointerException();
+    }
+
+    public List<ProductShortDto> getProductDtosByTypeAndSort(EquipmentType type, String sort) {
+        return mapper.toDtoList(findEquipmentByTypeAndSort(type, sort));
     }
 }

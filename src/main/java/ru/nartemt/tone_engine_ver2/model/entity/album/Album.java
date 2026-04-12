@@ -1,5 +1,6 @@
 package ru.nartemt.tone_engine_ver2.model.entity.album;
 
+import ru.nartemt.tone_engine_ver2.model.entity.guitar.settings.BodyShape;
 import ru.nartemt.tone_engine_ver2.model.entity.preset.Preset;
 
 import jakarta.persistence.*;
@@ -36,8 +37,9 @@ public class Album {
     @Column(name = "target_brand")
     private String targetBrand;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "target_shape")
-    private String targetShape;
+    private BodyShape targetShape;
 
     @Column(name = "is_lo_fi")
     private boolean isLoFi;
@@ -72,7 +74,7 @@ public class Album {
         return targetBrand;
     }
 
-    public String getTargetShape() {
+    public BodyShape getTargetShape() {
         return targetShape;
     }
 
@@ -112,7 +114,7 @@ public class Album {
         this.targetBrand = targetBrand;
     }
 
-    public void setTargetShape(String targetShape) {
+    public void setTargetShape(BodyShape targetShape) {
         this.targetShape = targetShape;
     }
 

@@ -1,9 +1,11 @@
 package ru.nartemt.tone_engine_ver2.repository.specification;
 
 import org.springframework.data.jpa.domain.Specification;
+import ru.nartemt.tone_engine_ver2.model.entity.EquipmentType;
 import ru.nartemt.tone_engine_ver2.model.entity.MusicalEquipment;
 
 import java.math.BigDecimal;
+import java.util.Locale;
 
 public class EquipmentSpecification {
 
@@ -28,6 +30,13 @@ public class EquipmentSpecification {
             );
             return null;
         };
+    }
+
+    public static <T extends MusicalEquipment> Specification<T> hasType(EquipmentType type) {
+        if (type == null)
+            return null;
+        return (root, query, cb) ->
+                cb.equal(root.get("equipmentType"), type);
     }
 
 }

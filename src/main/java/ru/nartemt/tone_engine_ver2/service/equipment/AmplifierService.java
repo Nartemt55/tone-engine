@@ -20,17 +20,19 @@ public class AmplifierService extends AbstractEquipmentService<Amplifier, Amplif
     public double calculateScore(Amplifier amplifier, Preset preset) {
         double score = 0;
         var config = scoringConfig.getScoring();
-
         double warmthDiff = Math.abs((double) amplifier.getWarmthScore() - preset.getWarmthTarget());
-        score += (100 - warmthDiff) * config.getWarmth();
+        score += (100 - warmthDiff * 10) * config.getWarmth();
 
-        if ((preset.getWarmthTarget() < 30 && amplifier.getAmplifierType() == AmplifierType.SOLID_STATE) ||
-                (preset.getWarmthTarget() > 70 && amplifier.getAmplifierType() == AmplifierType.TUBE)) {
-            score += 40.0;
+        if (preset.getWarmthTarget() <= 5 && amplifier.getAmplifierType() == AmplifierType.TUBE) {
+            score += 50.0;
+        }
+
+        if (preset.getWarmthTarget() < 3 && amplifier.getAmplifierType() != AmplifierType.SOLID_STATE) {
+            score += 20.0;
         }
 
         if (amplifier.getOutputPower() < preset.getRequiredOutputPower()) {
-            score -= 50.0;
+            score -= 100.0;
         }
 
         return score;

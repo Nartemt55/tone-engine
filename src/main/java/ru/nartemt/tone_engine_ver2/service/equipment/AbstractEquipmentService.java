@@ -4,6 +4,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import ru.nartemt.tone_engine_ver2.config.ScoringConfig;
+import ru.nartemt.tone_engine_ver2.model.entity.EquipmentType;
 import ru.nartemt.tone_engine_ver2.model.entity.MusicalEquipment;
 import ru.nartemt.tone_engine_ver2.model.entity.preset.Preset;
 import ru.nartemt.tone_engine_ver2.repository.specification.EquipmentSpecification;
@@ -31,10 +32,11 @@ public abstract class AbstractEquipmentService<E extends MusicalEquipment,
         return entityClass.getSimpleName().equalsIgnoreCase(equipmentType);
     }
 
-    public List<E> findEquipmentByPresetAndBudget(Preset preset, BigDecimal budget) {
+    public List<E> findEquipmentByPresetBudgetType(Preset preset, BigDecimal budget, EquipmentType type) {
         Specification<E> spec = Specification.allOf(
                 EquipmentSpecification.isInStock(),
-                EquipmentSpecification.priceLessThanAllBudget(budget)
+                EquipmentSpecification.priceLessThanAllBudget(budget),
+                EquipmentSpecification.hasType(type)
         );
         return repository.findAll(spec)
                 .stream()
