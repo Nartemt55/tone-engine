@@ -1,13 +1,14 @@
 package ru.nartemt.tone_engine_ver2.service.album;
 
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.nartemt.tone_engine_ver2.model.entity.album.Genre;
 import ru.nartemt.tone_engine_ver2.model.entity.preset.Preset;
 import ru.nartemt.tone_engine_ver2.repository.AlbumRepository;
 import ru.nartemt.tone_engine_ver2.model.entity.album.Album;
 import ru.nartemt.tone_engine_ver2.service.base.AbstractBaseService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,5 +21,13 @@ public class AlbumService extends AbstractBaseService<Album, Long, AlbumReposito
     public Optional<Preset> getPresetByAlbumId(long id) {
         return repository.findById(id)
                 .map(Album::getPreset);
+    }
+
+    public List<Album> findAlbumsByGenre(Genre genre) {
+        if (genre == null)
+            return repository.findAll();
+        return repository.findAll().stream()
+                .filter(album -> album.getGenre().equals(genre))
+                .toList();
     }
 }

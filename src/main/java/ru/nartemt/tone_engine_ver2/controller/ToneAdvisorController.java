@@ -32,7 +32,7 @@ public class ToneAdvisorController {
         if (albumId != null)
             model.addAttribute("advisorResponse", toneAdvisorService.getAdvisorResponseDto(albumId, budget));
         model.addAttribute("genres", Genre.values());
-        model.addAttribute("albums", albumService.findAll());
+        model.addAttribute("albums", albumService.findAlbumsByGenre(genre));
 
         return "tone-advisor";
     }

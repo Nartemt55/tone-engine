@@ -21,6 +21,7 @@ public enum Genre {
     DEATH_METAL("Death Metal"),
     MELODIC_DEATH_METAL("Melodic Death Metal"),
     BLACK_METAL("Black Metal"),
+    VIKING_METAL("Viking Metal"),
     DOOM_METAL("Doom Metal"),
 
     // MODERN METAL

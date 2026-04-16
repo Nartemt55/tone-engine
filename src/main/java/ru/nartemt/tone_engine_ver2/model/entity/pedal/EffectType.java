@@ -7,5 +7,6 @@ public enum EffectType {
     FUZZ,
     REVERB,
     CHORUS,
+    NOISE_GATE,
     WAH;
 }
