@@ -1,9 +1,9 @@
 package ru.nartemt.tone_engine_ver2.service.album;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.nartemt.tone_engine_ver2.model.entity.album.Genre;
-import ru.nartemt.tone_engine_ver2.model.entity.preset.Preset;
 import ru.nartemt.tone_engine_ver2.repository.AlbumRepository;
 import ru.nartemt.tone_engine_ver2.model.entity.album.Album;
 import ru.nartemt.tone_engine_ver2.service.base.AbstractBaseService;
@@ -18,16 +18,17 @@ public class AlbumService extends AbstractBaseService<Album, Long, AlbumReposito
         super(albumRepository);
     }
 
-    public Optional<Preset> getPresetByAlbumId(long id) {
-        return repository.findById(id)
-                .map(Album::getPreset);
+    public Optional<Album> findWithPresetsById(Long id) {
+        if (id != null)
+            return repository.findWithPresetsById(id);
+        else
+            throw new NullPointerException("Album id is null");
     }
+
 
     public List<Album> findAlbumsByGenre(Genre genre) {
         if (genre == null)
             return repository.findAll();
-        return repository.findAll().stream()
-                .filter(album -> album.getGenre().equals(genre))
-                .toList();
+        return repository.findAllByGenre(genre);
     }
 }

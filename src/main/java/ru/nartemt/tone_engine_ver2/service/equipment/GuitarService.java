@@ -3,7 +3,7 @@ package ru.nartemt.tone_engine_ver2.service.equipment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.nartemt.tone_engine_ver2.config.ScoringConfig;
-import ru.nartemt.tone_engine_ver2.model.entity.guitar.settings.BodyShape;
+import ru.nartemt.tone_engine_ver2.model.entity.album.Album;
 import ru.nartemt.tone_engine_ver2.model.entity.preset.Preset;
 import ru.nartemt.tone_engine_ver2.repository.GuitarRepository;
 import ru.nartemt.tone_engine_ver2.model.entity.guitar.Guitar;
@@ -15,23 +15,23 @@ public class GuitarService extends AbstractEquipmentService<Guitar, GuitarReposi
         super(guitarRepository, Guitar.class, scoringConfig);
     }
     @Override
-    public double calculateScore(Guitar guitar, Preset preset) {
+    public double calculateScore(Guitar guitar, Album album) {
         double score = 0;
         var config = scoringConfig.getScoring();
+        Preset preset = album.getPreset();
 
-        if (guitar.getBrand().equalsIgnoreCase(preset.getAlbum().getTargetBrand())) {
-            score += 500.0; // Брендовое соответствие важнее всего
+        if (guitar.getBrand().equalsIgnoreCase(album.getTargetBrand())) {
+            score += 500.0;
         }
 
-        if (guitar.getBodyShape() == preset.getAlbum().getTargetShape()) {
-            score += 300.0; // Форма (например, Flying V) дает огромный буст
+        if (guitar.getBodyShape() == album.getTargetShape()) {
+            score += 300.0;
         }
 
-        // 2. Датчики (строгое условие)
         if (guitar.getPickupConfig() == preset.getReqPickup()) {
             score += config.getBonus().getPickupMatch();
         } else {
-            score -= 200.0; // Если нужны хамбакеры, а впаривают синглы — это не тот звук
+            score -= 200.0;
         }
 
         double trebleDiff = Math.abs(guitar.getBaseTrebleResponse() - preset.getFreqHigh());

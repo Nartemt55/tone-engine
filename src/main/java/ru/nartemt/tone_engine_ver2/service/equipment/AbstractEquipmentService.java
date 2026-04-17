@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import ru.nartemt.tone_engine_ver2.config.ScoringConfig;
 import ru.nartemt.tone_engine_ver2.model.entity.EquipmentType;
 import ru.nartemt.tone_engine_ver2.model.entity.MusicalEquipment;
+import ru.nartemt.tone_engine_ver2.model.entity.album.Album;
 import ru.nartemt.tone_engine_ver2.model.entity.preset.Preset;
 import ru.nartemt.tone_engine_ver2.repository.specification.EquipmentSpecification;
 import ru.nartemt.tone_engine_ver2.service.base.AbstractBaseService;
@@ -26,13 +27,13 @@ public abstract class AbstractEquipmentService<E extends MusicalEquipment,
         this.scoringConfig = scoringConfig;
     }
 
-    public abstract double calculateScore(E equipment, Preset preset);
+    public abstract double calculateScore(E equipment, Album album);
 
-    public boolean isSupport(String equipmentType) {
-        return entityClass.getSimpleName().equalsIgnoreCase(equipmentType);
+    public boolean isSupport(EquipmentType equipmentType) {
+        return entityClass.getSimpleName().equalsIgnoreCase(equipmentType.toString());
     }
 
-    public List<E> findEquipmentByPresetBudgetType(Preset preset, BigDecimal budget, EquipmentType type) {
+    public List<E> findEquipmentByAlbumBudgetType(Album album, BigDecimal budget, EquipmentType type) {
         Specification<E> spec = Specification.allOf(
                 EquipmentSpecification.isInStock(),
                 EquipmentSpecification.priceLessThanAllBudget(budget),
@@ -40,11 +41,9 @@ public abstract class AbstractEquipmentService<E extends MusicalEquipment,
         );
         return repository.findAll(spec)
                 .stream()
-                .sorted((e1, e2) -> Double.compare(calculateScore(e2, preset), calculateScore(e1, preset)))
+                .sorted((e1, e2) -> Double.compare(calculateScore(e2, album), calculateScore(e1, album)))
                 .limit(5)
                 .toList();
     }
-
-
 
 }

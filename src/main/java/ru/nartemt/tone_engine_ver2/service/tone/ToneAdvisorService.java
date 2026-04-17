@@ -32,22 +32,18 @@ public class ToneAdvisorService {
         this.config = config.getScoring();
     }
 
-
     public AdvisorResponseDto getAdvisorResponseDto(long albumId, BigDecimal budget) {
-        Album album = albumService.findById(albumId)
+        Album album = albumService.findWithPresetsById(albumId)
                 .orElseThrow(() -> new EntityNotFoundException("Album not found"));
-        Preset preset = albumService.getPresetByAlbumId(albumId)
-                .orElseThrow(() -> new EntityNotFoundException("Album not found"));
-
-        List<MusicalEquipment> recommendedEquipment = getRecommendedEquipment(preset, budget);
+        List<MusicalEquipment> recommendedEquipment = getRecommendedEquipment(album, budget);
 
         return new AdvisorResponseDto(album,
                 recommendedEquipment,
-                getFrequencyBars(preset),
+                getFrequencyBars(album.getPreset()),
                 getFinalPrice(recommendedEquipment));
     }
 
-    private List<MusicalEquipment> getRecommendedEquipment(Preset preset, BigDecimal budget) {
+    private List<MusicalEquipment> getRecommendedEquipment(Album album, BigDecimal budget) {
         Map<EquipmentType, BigDecimal> budgetMap = Map.of(
                 EquipmentType.GUITAR, budget.multiply(BigDecimal.valueOf(config.getBalance().getGuitar())),
                 EquipmentType.AMPLIFIER, budget.multiply(BigDecimal.valueOf(config.getBalance().getAmplifier())),
@@ -56,7 +52,7 @@ public class ToneAdvisorService {
         List<MusicalEquipment> equipmentList = new ArrayList<>();
 
         for (EquipmentType type : budgetMap.keySet()) {
-            MusicalEquipment equipment = findTopMatch(preset, budgetMap.get(type), type);
+            MusicalEquipment equipment = findTopMatch(album, budgetMap.get(type), type);
             if (equipment != null)
                 equipmentList.add(equipment);
             else
@@ -65,12 +61,14 @@ public class ToneAdvisorService {
         return equipmentList;
     }
 
-    private MusicalEquipment findTopMatch(Preset preset, BigDecimal budget,
+    private MusicalEquipment findTopMatch(Album album, BigDecimal budget,
                                           EquipmentType type) {
 
-        return equipmentService.stream()
+        return equipmentService
+                .stream()
+                .filter(service -> service.isSupport(type))
                 .map(p -> p
-                        .findEquipmentByPresetBudgetType(preset, budget, type))
+                        .findEquipmentByAlbumBudgetType(album, budget, type))
                 .filter(matches -> !matches.isEmpty())
                 .map(List::getFirst)
                 .findFirst()

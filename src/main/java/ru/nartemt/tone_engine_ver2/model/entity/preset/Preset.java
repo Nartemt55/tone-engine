@@ -14,9 +14,6 @@ public class Preset {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne(mappedBy = "preset")
-    private Album album;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "req_pickup", nullable = false)
     private PickupConfig reqPickup;
@@ -119,11 +116,4 @@ public class Preset {
         this.reqTuning = reqTuning;
     }
 
-    public Album getAlbum() {
-        return album;
-    }
-
-    public void setAlbum(Album album) {
-        this.album = album;
-    }
 }

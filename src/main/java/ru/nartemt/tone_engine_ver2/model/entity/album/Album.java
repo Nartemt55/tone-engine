@@ -27,7 +27,7 @@ public class Album {
     @Column(name = "cover_url")
     private String coverUrl;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "preset_id", nullable = false)
     private Preset preset;
 
