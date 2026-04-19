@@ -30,15 +30,17 @@ public class CartService {
     public void addToCart(AddToCartRequest request) {
         if (request.id() != null) {
             CartItemDto duplicate = cart.getCartItemDtos().stream()
-                    .filter(e -> e.getId() == request.id())
+                    .filter(e -> e.id() == request.id())
                     .findAny()
                     .orElse(null);
-            if (duplicate != null)
-                duplicate.setQuantity(duplicate.getQuantity() + request.quantity());
+            if (duplicate != null) {
+                CartItemDto updated = duplicate.toBuilder().quantity(duplicate.quantity() + request.quantity()).build();
+                cart.getCartItemDtos().remove(duplicate);
+                cart.getCartItemDtos().add(updated);
+            }
             else {
                 MusicalEquipment equipment = catalogService.findById(request.id());
-                CartItemDto dto = mapper.toDto(equipment);
-                dto.setQuantity(request.quantity());
+                CartItemDto dto = mapper.toDto(equipment).toBuilder().quantity(request.quantity()).build();
                 cart.getCartItemDtos().add(dto);
             }
         }
@@ -46,7 +48,7 @@ public class CartService {
 
     public void removeFromCart(Long id) {
         if (id != null)
-            cart.getCartItemDtos().removeIf(i -> i.getId() == id);
+            cart.getCartItemDtos().removeIf(i -> i.id() == id);
     }
 
     public void clearCart() {
@@ -55,21 +57,20 @@ public class CartService {
 
     private CartItemDto getCartItemById(long id) {
         return cart.getCartItemDtos().stream()
-                .filter(item -> item.getId() == id)
+                .filter(item -> item.id() == id)
                 .findAny()
                 .orElseThrow();
     }
 
     private BigDecimal getTotalPrice() {
         return cart.getCartItemDtos().stream()
-                .map(CartItemDto::subTotal)
-                .filter(Objects::nonNull)
+                .map(i -> i.price().multiply(BigDecimal.valueOf(i.quantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     private int getAmountOfItems() {
         return cart.getCartItemDtos().stream()
-                .map(CartItemDto::getQuantity)
+                .map(CartItemDto::quantity)
                 .reduce(0, Integer::sum);
     }
 
