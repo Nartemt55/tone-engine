@@ -2,9 +2,17 @@ package ru.nartemt.tone_engine_ver2.model.entity.pedal;
 
 import jakarta.persistence.*;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.nartemt.tone_engine_ver2.model.entity.MusicalEquipment;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "pedals")
 @PrimaryKeyJoinColumn(name = "id")
 public class Pedal extends MusicalEquipment {
@@ -19,30 +27,4 @@ public class Pedal extends MusicalEquipment {
     @Column(name = "base_mid_responce")
     private int baseMidResponce;
 
-    public Pedal() {
-    }
-
-    public EffectType getEffectType() {
-        return effectType;
-    }
-
-    public int getGainLevel() {
-        return gainLevel;
-    }
-
-    public int getBaseMidResponce() {
-        return baseMidResponce;
-    }
-
-    public void setEffectType(EffectType effectType) {
-        this.effectType = effectType;
-    }
-
-    public void setGainLevel(int gainLevel) {
-        this.gainLevel = gainLevel;
-    }
-
-    public void setBaseMidResponce(int baseMidResponce) {
-        this.baseMidResponce = baseMidResponce;
-    }
 }

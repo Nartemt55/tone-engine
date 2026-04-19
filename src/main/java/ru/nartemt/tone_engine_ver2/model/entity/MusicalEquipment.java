@@ -1,10 +1,18 @@
 package ru.nartemt.tone_engine_ver2.model.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.math.BigDecimal;
-import java.util.Comparator;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "musical_equipment")
 public abstract class MusicalEquipment {
@@ -35,73 +43,4 @@ public abstract class MusicalEquipment {
     @Column(name = "equipment_type", nullable = false)
     private EquipmentType equipmentType;
 
-    public MusicalEquipment() { }
-
-    public String getEquipmentFullName() {
-        return brand + " " + model;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public EquipmentType getEquipmentType() {
-        return equipmentType;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
-
-    public void setEquipmentType(EquipmentType equipmentType) {
-        this.equipmentType = equipmentType;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
 }

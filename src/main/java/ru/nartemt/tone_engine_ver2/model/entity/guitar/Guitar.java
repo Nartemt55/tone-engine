@@ -1,5 +1,9 @@
 package ru.nartemt.tone_engine_ver2.model.entity.guitar;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.nartemt.tone_engine_ver2.model.entity.MusicalEquipment;
 import ru.nartemt.tone_engine_ver2.model.entity.guitar.settings.BodyShape;
 import ru.nartemt.tone_engine_ver2.model.entity.guitar.settings.PickupConfig;
@@ -9,6 +13,10 @@ import ru.nartemt.tone_engine_ver2.model.entity.guitar.strings.Strings;
 import jakarta.persistence.*;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "guitars")
 @PrimaryKeyJoinColumn(name = "id")
 public class Guitar extends MusicalEquipment {
@@ -40,72 +48,6 @@ public class Guitar extends MusicalEquipment {
 
     @Column(name = "output_power")
     private int outputPower;
-
-    public Guitar() { }
-
-    public BodyShape getBodyShape() {
-        return bodyShape;
-    }
-
-    public String getBodyWood() {
-        return bodyWood;
-    }
-
-    public PickupConfig getPickupConfig() {
-        return pickupConfig;
-    }
-
-    public double getScaleLength() {
-        return scaleLength;
-    }
-
-    public Strings getStrings() {
-        return strings;
-    }
-
-    public Tuning getTuning() {
-        return tuning;
-    }
-
-    public int getBaseTrebleResponse() {
-        return baseTrebleResponse;
-    }
-
-    public int getOutputPower() {
-        return outputPower;
-    }
-
-    public void setBodyShape(BodyShape bodyShape) {
-        this.bodyShape = bodyShape;
-    }
-
-    public void setBodyWood(String bodyWood) {
-        this.bodyWood = bodyWood;
-    }
-
-    public void setPickupConfig(PickupConfig pickupConfig) {
-        this.pickupConfig = pickupConfig;
-    }
-
-    public void setScaleLength(double scaleLength) {
-        this.scaleLength = scaleLength;
-    }
-
-    public void setStrings(Strings strings) {
-        this.strings = strings;
-    }
-
-    public void setTuning(Tuning tuning) {
-        this.tuning = tuning;
-    }
-
-    public void setBaseTrebleResponse(int baseTrebleResponse) {
-        this.baseTrebleResponse = baseTrebleResponse;
-    }
-
-    public void setOutputPower(int outputPower) {
-        this.outputPower = outputPower;
-    }
 
     public String getTensionInfo() {
         int tensionIndex = this.tuning.getPitchOffset() - this.strings.getGauge().getTensionIndex();

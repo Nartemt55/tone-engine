@@ -1,5 +1,9 @@
 package ru.nartemt.tone_engine_ver2.model.entity.preset;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.nartemt.tone_engine_ver2.model.entity.album.Album;
 import ru.nartemt.tone_engine_ver2.model.entity.guitar.settings.PickupConfig;
 import ru.nartemt.tone_engine_ver2.model.entity.guitar.settings.Tuning;
@@ -7,6 +11,10 @@ import ru.nartemt.tone_engine_ver2.model.entity.guitar.settings.Tuning;
 import jakarta.persistence.*;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "sound_presets")
 public class Preset {
 
@@ -39,81 +47,5 @@ public class Preset {
 
     @Column(name = "warmth_target", nullable = false)
     private int warmthTarget;
-
-
-
-    public Preset() { }
-
-    public int getMinGainRequired() {
-        return minGainRequired;
-    }
-
-    public int getRequiredOutputPower() {
-        return requiredOutputPower;
-    }
-
-    public int getWarmthTarget() {
-        return warmthTarget;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public PickupConfig getReqPickup() {
-        return reqPickup;
-    }
-
-    public int getFreqLow() {
-        return freqLow;
-    }
-
-    public int getFreqMid() {
-        return freqMid;
-    }
-
-    public int getFreqHigh() {
-        return freqHigh;
-    }
-
-    public Tuning getReqTuning() {
-        return reqTuning;
-    }
-
-    public void setMinGainRequired(int minGainRequired) {
-        this.minGainRequired = minGainRequired;
-    }
-
-    public void setRequiredOutputPower(int requiredOutputPower) {
-        this.requiredOutputPower = requiredOutputPower;
-    }
-
-    public void setWarmthTarget(int warmthTarget) {
-        this.warmthTarget = warmthTarget;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setReqPickup(PickupConfig reqPickup) {
-        this.reqPickup = reqPickup;
-    }
-
-    public void setFreqLow(int freqLow) {
-        this.freqLow = freqLow;
-    }
-
-    public void setFreqMid(int freqMid) {
-        this.freqMid = freqMid;
-    }
-
-    public void setFreqHigh(int freqHigh) {
-        this.freqHigh = freqHigh;
-    }
-
-    public void setReqTuning(Tuning reqTuning) {
-        this.reqTuning = reqTuning;
-    }
 
 }

@@ -1,10 +1,18 @@
 package ru.nartemt.tone_engine_ver2.model.entity.guitar.strings;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.nartemt.tone_engine_ver2.model.entity.MusicalEquipment;
 
 import jakarta.persistence.*;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @PrimaryKeyJoinColumn(name = "id")
 @Table(name = "strings")
 public class Strings extends MusicalEquipment {
@@ -17,22 +25,4 @@ public class Strings extends MusicalEquipment {
     @Column(name = "strings_material", nullable = false)
     private StringsMaterial stringsMaterial;
 
-    public Strings() {
-    }
-
-    public StringsGauge getGauge() {
-        return gauge;
-    }
-
-    public StringsMaterial getStringsMaterial() {
-        return stringsMaterial;
-    }
-
-    public void setGauge(StringsGauge gauge) {
-        this.gauge = gauge;
-    }
-
-    public void setStringsMaterial(StringsMaterial stringsMaterial) {
-        this.stringsMaterial = stringsMaterial;
-    }
 }

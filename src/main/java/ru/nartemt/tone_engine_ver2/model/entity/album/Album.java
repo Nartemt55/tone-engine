@@ -1,11 +1,19 @@
 package ru.nartemt.tone_engine_ver2.model.entity.album;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.nartemt.tone_engine_ver2.model.entity.guitar.settings.BodyShape;
 import ru.nartemt.tone_engine_ver2.model.entity.preset.Preset;
 
 import jakarta.persistence.*;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "albums")
 public class Album {
 
@@ -44,85 +52,4 @@ public class Album {
     @Column(name = "is_lo_fi")
     private boolean isLoFi;
 
-    public Album() { }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getArtist() {
-        return artist;
-    }
-
-    public String getCoverUrl() {
-        return coverUrl;
-    }
-
-    public Preset getPreset() {
-        return preset;
-    }
-
-    public String getProTip() {
-        return proTip;
-    }
-
-    public String getTargetBrand() {
-        return targetBrand;
-    }
-
-    public BodyShape getTargetShape() {
-        return targetShape;
-    }
-
-    public Genre getGenre() {
-        return genre;
-    }
-
-    public boolean isLoFi() {
-        return isLoFi;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
-
-    public void setCoverUrl(String coverUrl) {
-        this.coverUrl = coverUrl;
-    }
-
-    public void setPreset(Preset preset) {
-        this.preset = preset;
-    }
-
-    public void setProTip(String proTip) {
-        this.proTip = proTip;
-    }
-
-    public void setTargetBrand(String targetBrand) {
-        this.targetBrand = targetBrand;
-    }
-
-    public void setTargetShape(BodyShape targetShape) {
-        this.targetShape = targetShape;
-    }
-
-    public void setLoFi(boolean loFi) {
-        isLoFi = loFi;
-    }
-
-    public void setGenre(Genre genre) {
-        this.genre = genre;
-    }
 }
