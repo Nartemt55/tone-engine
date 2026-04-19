@@ -1,5 +1,6 @@
 package ru.nartemt.tone_engine_ver2.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.nartemt.tone_engine_ver2.model.dto.AdvisorResponseDto;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/albums")
+@Tag(name = "AlbumController")
 public class AlbumController {
 
     private final ToneAdvisorService toneAdvisorService;

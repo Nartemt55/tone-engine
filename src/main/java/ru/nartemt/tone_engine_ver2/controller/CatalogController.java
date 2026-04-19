@@ -1,5 +1,6 @@
 package ru.nartemt.tone_engine_ver2.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/products")
+@Tag(name = "CatalogController")
 public class CatalogController {
 
     private final EquipmentCatalogService catalogService;

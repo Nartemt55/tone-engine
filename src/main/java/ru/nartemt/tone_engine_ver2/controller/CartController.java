@@ -1,5 +1,6 @@
 package ru.nartemt.tone_engine_ver2.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import ru.nartemt.tone_engine_ver2.service.cart.CartService;
 
 @RestController
 @RequestMapping("/cart")
+@Tag(name = "CartController")
 public class CartController {
 
     private final CartService cartService;
