@@ -1,12 +1,15 @@
 package ru.nartemt.tone_engine_ver2.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.nartemt.tone_engine_ver2.model.dto.CartDto;
+import ru.nartemt.tone_engine_ver2.model.request.AddToCartRequest;
 import ru.nartemt.tone_engine_ver2.service.cart.CartService;
 
-@Controller
+@RestController
+@RequestMapping("/cart")
 public class CartController {
 
     private final CartService cartService;
@@ -16,40 +19,26 @@ public class CartController {
         this.cartService = cartService;
     }
 
-    @GetMapping("/cart")
-    public String getCartPage(Model model) {
-
-        model.addAttribute("cart", cartService.getCartDto());
-        return "cart";
+    @GetMapping
+    public CartDto getCart() {
+        return cartService.getCartDto();
     }
 
-    @PostMapping("/cart/add")
-    public String handleAddToCart(@RequestParam("id") Long id) {
-        cartService.addToCart(id);
-        return "redirect:/cart";
+    @PostMapping("/items")
+    public ResponseEntity<Void> addToCart(@RequestBody AddToCartRequest request) {
+        cartService.addToCart(request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PostMapping("/cart/remove")
-    public String handleDeleteFromCart(@RequestParam("id") Long id) {
+    @DeleteMapping("/items/{id}")
+    public ResponseEntity<Void> deleteFromCart(@PathVariable Long id) {
         cartService.removeFromCart(id);
-        return "redirect:/cart";
+        return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/cart/clear")
-    public String handleClearCart() {
+    @DeleteMapping("/items")
+    public ResponseEntity<Void> handleClearCart() {
         cartService.clearCart();
-        return "redirect:/cart";
-    }
-
-    @PostMapping("/cart/increment")
-    public String handleIncrementAmountOfItem(@RequestParam("id") Long id) {
-        cartService.incrementAmountOfItem(id);
-        return "redirect:/cart";
-    }
-
-    @PostMapping("/cart/decrement")
-    public String handleDecrementAmountOfItem(@RequestParam("id") Long id) {
-        cartService.decrementAmountOfItem(id);
-        return "redirect:/cart";
+        return ResponseEntity.noContent().build();
     }
 }

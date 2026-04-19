@@ -1,8 +1,9 @@
 package ru.nartemt.tone_engine_ver2.service.album;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.nartemt.tone_engine_ver2.mapper.AlbumPreviewMapper;
+import ru.nartemt.tone_engine_ver2.model.dto.AlbumPreviewDto;
 import ru.nartemt.tone_engine_ver2.model.entity.album.Genre;
 import ru.nartemt.tone_engine_ver2.repository.AlbumRepository;
 import ru.nartemt.tone_engine_ver2.model.entity.album.Album;
@@ -13,9 +14,13 @@ import java.util.Optional;
 
 @Service
 public class AlbumService extends AbstractBaseService<Album, Long, AlbumRepository> {
+
+    private final AlbumPreviewMapper mapper;
+
     @Autowired
-    public AlbumService(AlbumRepository albumRepository) {
+    public AlbumService(AlbumRepository albumRepository, AlbumPreviewMapper mapper) {
         super(albumRepository);
+        this.mapper = mapper;
     }
 
     public Optional<Album> findWithPresetsById(Long id) {
@@ -30,5 +35,9 @@ public class AlbumService extends AbstractBaseService<Album, Long, AlbumReposito
         if (genre == null)
             return repository.findAll();
         return repository.findAllByGenre(genre);
+    }
+
+    public List<AlbumPreviewDto> findAlbumDtosByGenre(Genre genre) {
+        return mapper.toDtoList(findAlbumsByGenre(genre));
     }
 }

@@ -7,6 +7,7 @@ import ru.nartemt.tone_engine_ver2.model.dto.Cart;
 import ru.nartemt.tone_engine_ver2.model.dto.CartDto;
 import ru.nartemt.tone_engine_ver2.model.dto.CartItemDto;
 import ru.nartemt.tone_engine_ver2.model.entity.MusicalEquipment;
+import ru.nartemt.tone_engine_ver2.model.request.AddToCartRequest;
 import ru.nartemt.tone_engine_ver2.service.equipment.EquipmentCatalogService;
 
 import java.math.BigDecimal;
@@ -26,17 +27,18 @@ public class CartService {
         this.mapper = mapper;
     }
 
-    public void addToCart(Long id) {
-        if (id != null) {
+    public void addToCart(AddToCartRequest request) {
+        if (request.id() != null) {
             CartItemDto duplicate = cart.getCartItemDtos().stream()
-                    .filter(e -> e.getId() == id)
+                    .filter(e -> e.getId() == request.id())
                     .findAny()
                     .orElse(null);
             if (duplicate != null)
-                duplicate.setQuantity(duplicate.getQuantity() + 1);
+                duplicate.setQuantity(duplicate.getQuantity() + request.quantity());
             else {
-                MusicalEquipment equipment = catalogService.findById(id);
+                MusicalEquipment equipment = catalogService.findById(request.id());
                 CartItemDto dto = mapper.toDto(equipment);
+                dto.setQuantity(request.quantity());
                 cart.getCartItemDtos().add(dto);
             }
         }
@@ -56,23 +58,6 @@ public class CartService {
                 .filter(item -> item.getId() == id)
                 .findAny()
                 .orElseThrow();
-    }
-
-    public void incrementAmountOfItem(Long id) {
-        if (id != null) {
-            CartItemDto item = getCartItemById(id);
-            item.setQuantity(item.getQuantity() + 1);
-        }
-    }
-
-    public void decrementAmountOfItem(Long id) {
-        if (id != null) {
-            CartItemDto item = getCartItemById(id);
-            if (item.getQuantity() == 1)
-                cart.getCartItemDtos().remove(item);
-            if (item.getQuantity() > 1)
-                item.setQuantity(item.getQuantity() - 1);
-        }
     }
 
     private BigDecimal getTotalPrice() {

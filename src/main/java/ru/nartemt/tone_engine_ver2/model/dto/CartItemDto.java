@@ -11,6 +11,15 @@ public class CartItemDto {
     private BigDecimal price;
     private int quantity = 1;
 
+    public CartItemDto(long id, String brand, String model, String imageUrl, BigDecimal price, int quantity) {
+        this.id = id;
+        this.brand = brand;
+        this.model = model;
+        this.imageUrl = imageUrl;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
     public CartItemDto() { }
 
     public CartItemDto(long id, String brand, String model, String imageUrl, BigDecimal price) {

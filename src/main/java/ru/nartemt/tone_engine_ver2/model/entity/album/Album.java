@@ -20,12 +20,12 @@ public class Album {
     @Column(name = "artist", nullable = false, length = 30)
     private String artist;
 
+    @Column(name = "cover_url")
+    private String coverUrl;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "genre", length = 30)
     private Genre genre;
-
-    @Column(name = "cover_url")
-    private String coverUrl;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "preset_id", nullable = false)

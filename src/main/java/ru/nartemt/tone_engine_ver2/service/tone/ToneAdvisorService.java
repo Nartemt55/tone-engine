@@ -32,7 +32,7 @@ public class ToneAdvisorService {
         this.config = config.getScoring();
     }
 
-    public AdvisorResponseDto getAdvisorResponseDto(long albumId, BigDecimal budget) {
+    public AdvisorResponseDto getAdvisorResponseDto(Long albumId, BigDecimal budget) {
         Album album = albumService.findWithPresetsById(albumId)
                 .orElseThrow(() -> new EntityNotFoundException("Album not found"));
         List<MusicalEquipment> recommendedEquipment = getRecommendedEquipment(album, budget);

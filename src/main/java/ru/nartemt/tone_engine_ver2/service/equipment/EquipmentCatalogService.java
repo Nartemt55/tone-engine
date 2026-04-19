@@ -8,6 +8,7 @@ import ru.nartemt.tone_engine_ver2.mapper.ProductShortMapper;
 import ru.nartemt.tone_engine_ver2.model.dto.ProductShortDto;
 import ru.nartemt.tone_engine_ver2.model.entity.EquipmentType;
 import ru.nartemt.tone_engine_ver2.model.entity.MusicalEquipment;
+import ru.nartemt.tone_engine_ver2.model.request.CatalogFilterRequest;
 import ru.nartemt.tone_engine_ver2.repository.EquipmentRepository;
 import ru.nartemt.tone_engine_ver2.repository.specification.EquipmentSpecification;
 
@@ -42,7 +43,7 @@ public class EquipmentCatalogService {
             throw new NullPointerException();
     }
 
-    public List<ProductShortDto> getProductDtosByTypeAndSort(EquipmentType type, String sort) {
-        return mapper.toDtoList(findEquipmentByTypeAndSort(type, sort));
+    public List<ProductShortDto> getProductDtosByFilter(CatalogFilterRequest filter) {
+        return mapper.toDtoList(findEquipmentByTypeAndSort(filter.type(), filter.sort()));
     }
 }
