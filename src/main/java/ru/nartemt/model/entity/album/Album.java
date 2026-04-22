@@ -38,6 +38,9 @@ public class Album {
     @Column(name = "is_lo_fi")
     private boolean isLoFi;
 
+    @Column(name = "genre")
+    private Genre genre;
+
     public Album() { }
 
     public long getId() {

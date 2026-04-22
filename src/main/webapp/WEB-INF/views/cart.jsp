@@ -19,10 +19,10 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-black border-bottom border-info p-3">
     <div class="container-fluid">
-        <a class="brand-logo fw-bold" href="/home" style="letter-spacing: 3px;">TONE ENGINE</a>
+        <a class="brand-logo fw-bold" href="/tone-engine/home" style="letter-spacing: 3px;">TONE ENGINE</a>
         <div class="navbar-nav ms-auto">
-            <a href="/home" class="nav-link">STORE</a>
-            <a href="/cart" class="nav-link active text-info"><i class="bi bi-cart-fill"></i>CART</a>
+            <a href="/tone-engine/home" class="nav-link">STORE</a>
+            <a href="/tone-engine/cart" class="nav-link active text-info"><i class="bi bi-cart-fill"></i>CART</a>
         </div>
     </div>
 </nav>
@@ -41,7 +41,7 @@
                 <c:if test="${empty sessionScope.cart.cartItems}">
                     <div class="text-center py-5">
                         <p class="text-white-50">Inventory is empty.</p>
-                        <a href="/home" class="btn btn-outline-info btn-sm">Back to Store</a>
+                        <a href="/tone-engine/home" class="btn btn-outline-info btn-sm">Back to Store</a>
                     </div>
                 </c:if>
 

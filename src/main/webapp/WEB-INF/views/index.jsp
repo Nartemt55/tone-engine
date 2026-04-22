@@ -22,12 +22,12 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-black border-bottom border-info p-3">
     <div class="container-fluid">
-        <a class="brand-logo fw-bold" href="/home" style="letter-spacing: 3px;">TONE ENGINE</a>
+        <a class="brand-logo fw-bold" href="/tone-engine/home" style="letter-spacing: 3px;">TONE ENGINE</a>
         <div class="navbar-nav ms-auto">
-            <a href="/home" class="nav-link active text-info">
+            <a href="/tone-engine/home" class="nav-link active text-info">
                 STORE
             </a>
-            <a href="/cart" class="nav-link">
+            <a href="/tone-engine/cart" class="nav-link">
                 <i class="bi bi-cart-fill"></i>CART
             </a>
         </div>
