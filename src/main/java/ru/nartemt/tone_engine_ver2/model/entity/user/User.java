@@ -18,10 +18,10 @@ public class User {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "name", nullable = false, length = 20, unique = true)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "password", nullable = false, length = 20)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
