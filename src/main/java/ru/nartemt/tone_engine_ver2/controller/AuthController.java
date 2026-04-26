@@ -10,8 +10,6 @@ import ru.nartemt.tone_engine_ver2.model.dto.jwt.UserCredentialsDto;
 import ru.nartemt.tone_engine_ver2.model.request.RegistrationRequest;
 import ru.nartemt.tone_engine_ver2.service.user.UserService;
 
-import javax.naming.AuthenticationException;
-
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -21,13 +19,13 @@ public class AuthController {
 
 
     @PostMapping("/sign-in")
-    public ResponseEntity<JwtAuthenticationDto> signIn(@RequestBody UserCredentialsDto credentialsDto) throws AuthenticationException {
+    public ResponseEntity<JwtAuthenticationDto> signIn(@RequestBody UserCredentialsDto credentialsDto) {
         JwtAuthenticationDto jwtAuthenticationDto = userService.signIn(credentialsDto);
         return ResponseEntity.ok(jwtAuthenticationDto);
     }
 
     @PostMapping("/refresh")
-    public JwtAuthenticationDto refresh(@RequestBody JwtRefreshDto refreshDto) throws AuthenticationException {
+    public JwtAuthenticationDto refresh(@RequestBody JwtRefreshDto refreshDto) {
         return userService.refresh(refreshDto);
     }
 

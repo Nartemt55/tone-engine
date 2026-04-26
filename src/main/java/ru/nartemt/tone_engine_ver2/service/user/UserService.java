@@ -1,12 +1,9 @@
 package ru.nartemt.tone_engine_ver2.service.user;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,12 +13,9 @@ import ru.nartemt.tone_engine_ver2.model.dto.jwt.JwtRefreshDto;
 import ru.nartemt.tone_engine_ver2.model.dto.jwt.UserCredentialsDto;
 import ru.nartemt.tone_engine_ver2.model.dto.jwt.UserDto;
 import ru.nartemt.tone_engine_ver2.model.entity.user.User;
-import ru.nartemt.tone_engine_ver2.model.entity.user.UserRole;
 import ru.nartemt.tone_engine_ver2.model.request.RegistrationRequest;
 import ru.nartemt.tone_engine_ver2.repository.UserRepository;
 import ru.nartemt.tone_engine_ver2.security.jwt.JwtService;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

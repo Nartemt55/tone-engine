@@ -30,11 +30,9 @@ public class JwtFilter extends OncePerRequestFilter {
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         String token = getTokenFromRequest(request);
         if (token != null && jwtService.validateToken(token)
-                && SecurityContextHolder.getContext().getAuthentication() != null) {
+                && SecurityContextHolder.getContext().getAuthentication() == null)
             setCustomUserDetailsToSecurityContextHolder(token);
-        }
         filterChain.doFilter(request, response);
-
     }
 
     private void setCustomUserDetailsToSecurityContextHolder(String token) {
