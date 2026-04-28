@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.security.core.AuthenticationException;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,13 +24,13 @@ public class GlobalExceptionHandler {
         Map<String, String> errors = new HashMap<>();
         e.getBindingResult().getFieldErrors().forEach(error ->
                 errors.put(error.getField(), error.getDefaultMessage()));
-        log.error("Validation error : {}", e.getMessage());
+        log.warn("Validation error : {}", e.getMessage());
         return ResponseEntity.badRequest().headers(buildHeaders()).body(errors);
     }
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ExceptionResponse> handleException(AuthenticationException e) {
-        log.error("Authentication error : {}", e.getMessage());
+        log.warn("Authentication error : {}", e.getMessage());
         HttpStatus status = HttpStatus.FORBIDDEN;
         ExceptionResponse response = new ExceptionResponse(status.value(), e.getMessage());
         return new ResponseEntity<>(response, buildHeaders(), status);
@@ -39,7 +38,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Throwable.class)
     public ResponseEntity<ExceptionResponse> handleException(Throwable throwable) {
-        log.error("Throwable : ", throwable);
+        log.error("Unexpected error occurred : ", throwable);
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         ExceptionResponse response = new ExceptionResponse(status.value(), throwable.getMessage());
         return new ResponseEntity<>(response, buildHeaders(), status);

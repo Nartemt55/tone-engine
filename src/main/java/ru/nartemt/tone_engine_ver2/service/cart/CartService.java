@@ -11,7 +11,6 @@ import ru.nartemt.tone_engine_ver2.model.request.AddToCartRequest;
 import ru.nartemt.tone_engine_ver2.service.equipment.EquipmentCatalogService;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 @Service
 public class CartService {

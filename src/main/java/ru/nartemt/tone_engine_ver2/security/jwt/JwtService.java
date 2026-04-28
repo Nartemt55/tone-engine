@@ -35,7 +35,7 @@ public class JwtService {
         );
     }
 
-    public String getEmailFromToken(String token) {
+    public String getUsernameFromToken(String token) {
         return Jwts.parser()
                 .verifyWith(getSingInKey())
                 .build()

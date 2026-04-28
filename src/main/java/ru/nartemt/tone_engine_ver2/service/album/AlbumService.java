@@ -30,7 +30,6 @@ public class AlbumService extends AbstractBaseService<Album, Long, AlbumReposito
             throw new NullPointerException("Album id is null");
     }
 
-
     public List<Album> findAlbumsByGenre(Genre genre) {
         if (genre == null)
             return repository.findAll();
