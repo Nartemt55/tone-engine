@@ -1,6 +1,7 @@
 package ru.nartemt.tone_engine_ver2.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class CartController {
     }
 
     @PostMapping("/items")
-    public ResponseEntity<Void> addToCart(@RequestBody AddToCartRequest request) {
+    public ResponseEntity<Void> addToCart(@RequestBody @Valid AddToCartRequest request) {
         cartService.addToCart(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

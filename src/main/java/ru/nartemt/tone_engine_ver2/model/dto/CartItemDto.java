@@ -5,6 +5,6 @@ import lombok.Builder;
 import java.math.BigDecimal;
 
 @Builder(toBuilder = true)
-public record CartItemDto(long id, String brand, String model,
-                          String imageUrl, BigDecimal price, int quantity) {
+public record CartItemDto(Long id, String brand, String model,
+                          String imageUrl, BigDecimal price, Integer quantity) {
 }

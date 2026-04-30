@@ -31,7 +31,7 @@ public class AlbumController {
     @GetMapping("/{id}/products")
     public AdvisorResponseDto getAdvisorResponse(
             @PathVariable Long id,
-            @RequestParam(required = false) @Min(0) BigDecimal budget) {
+            @RequestParam(required = false) BigDecimal budget) {
 
         return toneAdvisorService.getAdvisorResponseDto(id, budget);
     }

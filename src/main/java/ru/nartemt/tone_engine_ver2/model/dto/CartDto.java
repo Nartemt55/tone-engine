@@ -1,7 +1,10 @@
 package ru.nartemt.tone_engine_ver2.model.dto;
 
+import lombok.Builder;
+
 import java.math.BigDecimal;
 import java.util.List;
 
-public record CartDto(List<CartItemDto> cartItems, BigDecimal totalPrice, int itemsAmount) {
+@Builder
+public record CartDto(Long id, List<CartItemDto> cartItems, UserShortDto user, BigDecimal totalPrice, Integer itemsAmount) {
 }

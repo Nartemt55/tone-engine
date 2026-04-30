@@ -13,6 +13,7 @@ import ru.nartemt.tone_engine_ver2.repository.EquipmentRepository;
 import ru.nartemt.tone_engine_ver2.repository.specification.EquipmentSpecification;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EquipmentCatalogService {
@@ -36,11 +37,8 @@ public class EquipmentCatalogService {
         return equipmentList;
     }
 
-    public MusicalEquipment findById(Long id) {
-        if (id != null)
-            return equipmentRepository.findById(id).orElseThrow();
-        else
-            throw new NullPointerException();
+    public Optional<MusicalEquipment> findById(Long id) {
+        return equipmentRepository.findById(id);
     }
 
     public List<ProductShortDto> getProductDtosByFilter(CatalogFilterRequest filter) {

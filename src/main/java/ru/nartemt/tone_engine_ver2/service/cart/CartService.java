@@ -1,82 +1,109 @@
 package ru.nartemt.tone_engine_ver2.service.cart;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import ru.nartemt.tone_engine_ver2.mapper.CartItemMapper;
-import ru.nartemt.tone_engine_ver2.model.dto.Cart;
+import ru.nartemt.tone_engine_ver2.mapper.UserMapper;
 import ru.nartemt.tone_engine_ver2.model.dto.CartDto;
-import ru.nartemt.tone_engine_ver2.model.dto.CartItemDto;
 import ru.nartemt.tone_engine_ver2.model.entity.MusicalEquipment;
+import ru.nartemt.tone_engine_ver2.model.entity.cart.Cart;
+import ru.nartemt.tone_engine_ver2.model.entity.cart.CartItem;
+import ru.nartemt.tone_engine_ver2.model.entity.user.User;
 import ru.nartemt.tone_engine_ver2.model.request.AddToCartRequest;
+import ru.nartemt.tone_engine_ver2.repository.UserRepository;
+import ru.nartemt.tone_engine_ver2.repository.cart.CartRepository;
+import ru.nartemt.tone_engine_ver2.security.SecurityUtils;
 import ru.nartemt.tone_engine_ver2.service.equipment.EquipmentCatalogService;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CartService {
 
     private final EquipmentCatalogService catalogService;
-    private final Cart cart;
-    private final CartItemMapper mapper;
+    private final CartRepository cartRepository;
+    private final UserRepository userRepository;
+    private final SecurityUtils utils;
+    private final CartItemMapper cartItemMapper;
+    private final UserMapper userMapper;
 
-    @Autowired
-    public CartService(EquipmentCatalogService catalogService, Cart cart, CartItemMapper mapper) {
-        this.catalogService = catalogService;
-        this.cart = cart;
-        this.mapper = mapper;
+    private Optional<Cart> findByUserIdWithItems(Long userId) {
+        return cartRepository.findByUserIdWithItems(userId);
     }
 
-    public void addToCart(AddToCartRequest request) {
-        if (request.id() != null) {
-            CartItemDto duplicate = cart.getCartItemDtos().stream()
-                    .filter(e -> e.id() == request.id())
-                    .findAny()
-                    .orElse(null);
-            if (duplicate != null) {
-                CartItemDto updated = duplicate.toBuilder().quantity(duplicate.quantity() + request.quantity()).build();
-                cart.getCartItemDtos().remove(duplicate);
-                cart.getCartItemDtos().add(updated);
-            }
-            else {
-                MusicalEquipment equipment = catalogService.findById(request.id());
-                CartItemDto dto = mapper.toDto(equipment).toBuilder().quantity(request.quantity()).build();
-                cart.getCartItemDtos().add(dto);
-            }
-        }
-    }
-
-    public void removeFromCart(Long id) {
-        if (id != null)
-            cart.getCartItemDtos().removeIf(i -> i.id() == id);
-    }
-
-    public void clearCart() {
-        cart.getCartItemDtos().clear();
-    }
-
-    private CartItemDto getCartItemById(long id) {
-        return cart.getCartItemDtos().stream()
-                .filter(item -> item.id() == id)
-                .findAny()
-                .orElseThrow();
-    }
-
-    private BigDecimal getTotalPrice() {
-        return cart.getCartItemDtos().stream()
-                .map(i -> i.price().multiply(BigDecimal.valueOf(i.quantity())))
+    private BigDecimal countTotalPrice(Cart cart) {
+        return cart.getItems()
+                .stream()
+                .map(item -> item.getProduct().getPrice()
+                        .multiply(BigDecimal.valueOf(item.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    private int getAmountOfItems() {
-        return cart.getCartItemDtos().stream()
-                .map(CartItemDto::quantity)
-                .reduce(0, Integer::sum);
+
+    @Transactional
+    public Cart getCartOrCreate() {
+        User user = userRepository.findById(utils.getCurrentUserId())
+                .orElseThrow(() -> new AccessDeniedException("You must login before get a cart!"));
+
+        return findByUserIdWithItems(user.getId())
+                .orElseGet(() -> {
+                            Cart cart = new Cart(user, new ArrayList<>());
+                            return cartRepository.saveAndFlush(cart);
+                        }
+                );
     }
 
+    @Transactional
     public CartDto getCartDto() {
-        return new CartDto(cart.getCartItemDtos(),
-                getTotalPrice(),
-                getAmountOfItems()
-        );
+        Cart cart = getCartOrCreate();
+        return CartDto.builder()
+                .id(cart.getId())
+                .cartItems(cartItemMapper.toDtoList(cart.getItems()))
+                .user(userMapper.toShortDto(cart.getUser()))
+                .totalPrice(countTotalPrice(cart))
+                .itemsAmount(cart.getItems().size())
+                .build();
+    }
+
+    @Transactional
+    public void addToCart(AddToCartRequest request) {
+        Cart cart = getCartOrCreate();
+        MusicalEquipment equipment = catalogService.findById(request.id())
+                .orElseThrow(() -> new EntityNotFoundException("Equipment with " + request.id() + " not found"));
+
+        Optional<CartItem> foundedItem = cart.getItems()
+                .stream()
+                .filter(item -> item.getProduct().getId() == equipment.getId())
+                .findFirst();
+
+        if (foundedItem.isPresent()) {
+            CartItem item = foundedItem.get();
+            item.setQuantity(item.getQuantity() + request.quantity());
+        } else {
+            CartItem item = new CartItem(
+                    request.quantity(),
+                    cart,
+                    equipment
+            );
+            cart.getItems().add(item);
+        }
+    }
+
+    @Transactional
+    public void removeFromCart(Long productId) {
+        Cart cart = getCartOrCreate();
+        cart.getItems().removeIf(item -> item.getProduct().getId() == productId);
+    }
+
+    @Transactional
+    public void clearCart() {
+        Cart cart = getCartOrCreate();
+        cart.getItems().clear();
     }
 }
