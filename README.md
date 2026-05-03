@@ -49,8 +49,8 @@
    ```
 
 ### Вариант 2: Запуск вручную
-1. Поднимите локальную БД PostgreSQL и создайте базу данных `tone_engine`.
-2. Настройте подключение в `src/main/resources/application.yaml`.
+1. Поднимите локальную БД PostgreSQL и создайте базу данных `ToneEngine`.
+2. Настройте подключение в `src/main/resources/application.properties`.
 3. Соберите проект через Maven:
    ```bash
    mvn clean package
