@@ -15,6 +15,7 @@ import ru.nartemt.tone_engine_ver2.service.user.UserService;
 @RequiredArgsConstructor
 @Tag(name = "AuthController")
 public class AuthController {
+
     private final UserService userService;
 
 

@@ -1,9 +1,7 @@
 package ru.nartemt.tone_engine_ver2.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.nartemt.tone_engine_ver2.model.dto.AdvisorResponseDto;
 import ru.nartemt.tone_engine_ver2.model.dto.AlbumPreviewDto;
