@@ -1,5 +1,6 @@
 package ru.nartemt.tone_engine_ver2.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -21,16 +22,24 @@ public class AlbumController {
     private final ToneAdvisorService toneAdvisorService;
     private final AlbumService albumService;
 
+    @Operation(
+            summary = "Получить альбомы",
+            description = "Возвращает список альбомов, подходящих по заданному жанру"
+    )
     @GetMapping
     public List<AlbumPreviewDto> getAlbums(@RequestParam(required = false) Genre genre) {
         return albumService.findAlbumDtosByGenre(genre);
     }
 
+    @Operation(
+            summary = "Получить рекомендуемое оборудование",
+            description = "Возвращает AdvisorResponseDto со списком подходящего оборудования и другими данными " +
+                    "по выбранному альбому"
+    )
     @GetMapping("/{id}/products")
     public AdvisorResponseDto getAdvisorResponse(
             @PathVariable Long id,
             @RequestParam(required = false) BigDecimal budget) {
-
         return toneAdvisorService.getAdvisorResponseDto(id, budget);
     }
 }
