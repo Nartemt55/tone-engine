@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import ru.nartemt.tone_engine_ver2.service.cart.CartService;
 @RequestMapping("/cart")
 @Tag(name = "CartController")
 @RequiredArgsConstructor
+@Slf4j
 public class CartController {
 
     private final CartService cartService;
@@ -25,6 +27,7 @@ public class CartController {
     )
     @GetMapping
     public CartDto getCart() {
+        log.info("Request for get a cart");
         return cartService.getCartDto();
     }
 
@@ -34,6 +37,7 @@ public class CartController {
     )
     @PostMapping("/items")
     public ResponseEntity<Void> addToCart(@RequestBody @Valid AddToCartRequest request) {
+        log.info("Request for add to cart product : {}", request.id());
         cartService.addToCart(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -45,6 +49,7 @@ public class CartController {
     )
     @DeleteMapping("/items/{id}")
     public ResponseEntity<Void> deleteFromCart(@PathVariable Long id) {
+        log.info("Request for delete from cart product : {}", id);
         cartService.removeFromCart(id);
         return ResponseEntity.noContent().build();
     }
@@ -55,6 +60,7 @@ public class CartController {
     )
     @DeleteMapping("/items")
     public ResponseEntity<Void> handleClearCart() {
+        log.info("Request for clean cart");
         cartService.clearCart();
         return ResponseEntity.noContent().build();
     }

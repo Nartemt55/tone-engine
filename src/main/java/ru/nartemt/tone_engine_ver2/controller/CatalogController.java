@@ -3,6 +3,7 @@ package ru.nartemt.tone_engine_ver2.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequestMapping("/products")
 @Tag(name = "CatalogController")
 @RequiredArgsConstructor
+@Slf4j
 public class CatalogController {
 
     private final EquipmentCatalogService catalogService;
@@ -27,6 +29,7 @@ public class CatalogController {
     )
     @GetMapping
     public List<ProductShortDto> getProducts(CatalogFilterRequest filter) {
+        log.info("Request for get products by type : {}, order: {} ", filter.type(), filter.sort());
         return catalogService.getProductDtosByFilter(filter);
     }
 }

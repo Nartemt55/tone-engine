@@ -3,6 +3,7 @@ package ru.nartemt.tone_engine_ver2.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.nartemt.tone_engine_ver2.model.dto.AdvisorResponseDto;
 import ru.nartemt.tone_engine_ver2.model.dto.AlbumPreviewDto;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequestMapping("/albums")
 @Tag(name = "AlbumController")
 @RequiredArgsConstructor
+@Slf4j
 public class AlbumController {
 
     private final ToneAdvisorService toneAdvisorService;
@@ -28,6 +30,7 @@ public class AlbumController {
     )
     @GetMapping
     public List<AlbumPreviewDto> getAlbums(@RequestParam(required = false) Genre genre) {
+        log.info("Requesting albums by genre : {}", genre);
         return albumService.findAlbumDtosByGenre(genre);
     }
 
@@ -40,6 +43,7 @@ public class AlbumController {
     public AdvisorResponseDto getAdvisorResponse(
             @PathVariable Long id,
             @RequestParam(required = false) BigDecimal budget) {
+        log.info("Given an advisor response");
         return toneAdvisorService.getAdvisorResponseDto(id, budget);
     }
 }

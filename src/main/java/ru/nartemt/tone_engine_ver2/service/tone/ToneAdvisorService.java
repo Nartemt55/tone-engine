@@ -1,7 +1,8 @@
 package ru.nartemt.tone_engine_ver2.service.tone;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.nartemt.tone_engine_ver2.config.ScoringConfig;
 import ru.nartemt.tone_engine_ver2.model.dto.AdvisorResponseDto;
@@ -17,20 +18,13 @@ import java.math.BigDecimal;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class ToneAdvisorService {
 
     private final AlbumService albumService;
     private final List<AbstractEquipmentService<? extends MusicalEquipment, ? extends EquipmentRepository<? extends MusicalEquipment>>> equipmentService;
     private final ScoringConfig.Scoring config;
-
-    @Autowired
-    public ToneAdvisorService(AlbumService albumService,
-                              List<AbstractEquipmentService<? extends MusicalEquipment, ? extends EquipmentRepository<? extends MusicalEquipment>>> equipmentService,
-                              ScoringConfig config) {
-        this.albumService = albumService;
-        this.equipmentService = equipmentService;
-        this.config = config.getScoring();
-    }
 
     public AdvisorResponseDto getAdvisorResponseDto(Long albumId, BigDecimal budget) {
         Album album = albumService.findWithPresetsById(albumId)
@@ -55,8 +49,10 @@ public class ToneAdvisorService {
             MusicalEquipment equipment = findTopMatch(album, budgetMap.get(type), type);
             if (equipment != null)
                 equipmentList.add(equipment);
-            else
+            else {
+                log.warn("Equipment {} not found due to small budget", type);
                 return Collections.emptyList();
+            }
         }
         return equipmentList;
     }

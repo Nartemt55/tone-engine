@@ -3,6 +3,7 @@ package ru.nartemt.tone_engine_ver2.service.cart;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import ru.nartemt.tone_engine_ver2.mapper.CartItemMapper;
@@ -24,6 +25,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CartService {
 
     private final EquipmentCatalogService catalogService;
@@ -38,6 +40,7 @@ public class CartService {
     }
 
     private BigDecimal countTotalPrice(Cart cart) {
+        log.debug("Count total price of cart items");
         return cart.getItems()
                 .stream()
                 .map(item -> item.getProduct().getPrice()
@@ -53,6 +56,7 @@ public class CartService {
 
         return findByUserIdWithItems(user.getId())
                 .orElseGet(() -> {
+                            log.debug("User hasn't cart yet. Create new cart");
                             Cart cart = new Cart(user, new ArrayList<>());
                             return cartRepository.saveAndFlush(cart);
                         }
@@ -83,6 +87,7 @@ public class CartService {
                 .findFirst();
 
         if (foundedItem.isPresent()) {
+            log.debug("Item already in cart, update quantity");
             CartItem item = foundedItem.get();
             item.setQuantity(item.getQuantity() + request.quantity());
         } else {

@@ -1,6 +1,7 @@
 package ru.nartemt.tone_engine_ver2.controller.exception;
 
 import io.swagger.v3.oas.annotations.Hidden;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,22 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ExceptionResponse> handleException(AuthenticationException e) {
         log.warn("Authentication error : {}", e.getMessage());
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        ExceptionResponse response = new ExceptionResponse(status.value(), e.getMessage());
+        return new ResponseEntity<>(response, buildHeaders(), status);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> handleException(EntityNotFoundException e) {
+        log.warn("Entity not found : {}", e.getMessage());
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        ExceptionResponse response = new ExceptionResponse(status.value(), e.getMessage());
+        return new ResponseEntity<>(response, buildHeaders(), status);
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<ExceptionResponse> handleException(NullPointerException e) {
+        log.warn("NullPointerException : {}", e.getMessage());
         HttpStatus status = HttpStatus.FORBIDDEN;
         ExceptionResponse response = new ExceptionResponse(status.value(), e.getMessage());
         return new ResponseEntity<>(response, buildHeaders(), status);

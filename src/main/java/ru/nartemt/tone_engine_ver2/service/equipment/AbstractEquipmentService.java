@@ -7,7 +7,6 @@ import ru.nartemt.tone_engine_ver2.config.ScoringConfig;
 import ru.nartemt.tone_engine_ver2.model.entity.EquipmentType;
 import ru.nartemt.tone_engine_ver2.model.entity.MusicalEquipment;
 import ru.nartemt.tone_engine_ver2.model.entity.album.Album;
-import ru.nartemt.tone_engine_ver2.model.entity.preset.Preset;
 import ru.nartemt.tone_engine_ver2.repository.specification.EquipmentSpecification;
 import ru.nartemt.tone_engine_ver2.service.base.AbstractBaseService;
 

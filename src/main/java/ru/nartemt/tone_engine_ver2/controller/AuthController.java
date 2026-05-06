@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.nartemt.tone_engine_ver2.model.dto.jwt.JwtAuthenticationDto;
@@ -16,10 +17,10 @@ import ru.nartemt.tone_engine_ver2.service.user.UserService;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @Tag(name = "AuthController")
+@Slf4j
 public class AuthController {
 
     private final UserService userService;
-
 
     @Operation(
             summary = "Войти в аккаунт",
@@ -28,6 +29,7 @@ public class AuthController {
     @PostMapping("/sign-in")
     public ResponseEntity<JwtAuthenticationDto> signIn(@RequestBody @Valid UserCredentialsDto credentialsDto) {
         JwtAuthenticationDto jwtAuthenticationDto = userService.signIn(credentialsDto);
+        log.info("Request for login : {}", credentialsDto.name());
         return ResponseEntity.ok(jwtAuthenticationDto);
     }
 
@@ -37,6 +39,7 @@ public class AuthController {
     )
     @PostMapping("/refresh")
     public JwtAuthenticationDto refresh(@RequestBody JwtRefreshDto refreshDto) {
+        log.info("Request for refresh token");
         return userService.refresh(refreshDto);
     }
 
@@ -47,6 +50,7 @@ public class AuthController {
     @PostMapping("/sign-up")
     public ResponseEntity<JwtAuthenticationDto> signUp(@RequestBody @Valid RegistrationRequest request) {
         JwtAuthenticationDto jwtAuthenticationDto = userService.signUp(request);
+        log.info("Request for sign up : {}", request.name());
         return ResponseEntity.ok(jwtAuthenticationDto);
     }
 }

@@ -1,5 +1,6 @@
 package ru.nartemt.tone_engine_ver2.service.album;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.nartemt.tone_engine_ver2.mapper.AlbumPreviewMapper;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class AlbumService extends AbstractBaseService<Album, Long, AlbumRepository> {
 
     private final AlbumPreviewMapper mapper;
@@ -33,6 +35,7 @@ public class AlbumService extends AbstractBaseService<Album, Long, AlbumReposito
     public List<Album> findAlbumsByGenre(Genre genre) {
         if (genre == null)
             return repository.findAll();
+        log.warn("Genre is null. Return every album");
         return repository.findAllByGenre(genre);
     }
 
