@@ -22,10 +22,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleException(MethodArgumentNotValidException e) {
+        log.warn("Validation error : {}", e.getMessage());
         Map<String, String> errors = new HashMap<>();
         e.getBindingResult().getFieldErrors().forEach(error ->
                 errors.put(error.getField(), error.getDefaultMessage()));
-        log.warn("Validation error : {}", e.getMessage());
         return ResponseEntity.badRequest().headers(buildHeaders()).body(errors);
     }
 
@@ -40,15 +40,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ExceptionResponse> handleException(EntityNotFoundException e) {
         log.warn("Entity not found : {}", e.getMessage());
-        HttpStatus status = HttpStatus.FORBIDDEN;
-        ExceptionResponse response = new ExceptionResponse(status.value(), e.getMessage());
-        return new ResponseEntity<>(response, buildHeaders(), status);
-    }
-
-    @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<ExceptionResponse> handleException(NullPointerException e) {
-        log.warn("NullPointerException : {}", e.getMessage());
-        HttpStatus status = HttpStatus.FORBIDDEN;
+        HttpStatus status = HttpStatus.NOT_FOUND;
         ExceptionResponse response = new ExceptionResponse(status.value(), e.getMessage());
         return new ResponseEntity<>(response, buildHeaders(), status);
     }

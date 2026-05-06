@@ -34,16 +34,6 @@ public class AuthController {
     }
 
     @Operation(
-            summary = "Обновить аутентификационный токен",
-            description = "Принимает refresh, если он валиден то позволяет обновить аутентификационный токен"
-    )
-    @PostMapping("/refresh")
-    public JwtAuthenticationDto refresh(@RequestBody JwtRefreshDto refreshDto) {
-        log.info("Request for refresh token");
-        return userService.refresh(refreshDto);
-    }
-
-    @Operation(
             summary = "Зарегистрироваться",
             description = "Принимает RegistrationRequest с данными для регистрации, если данные валидны - регистрация успешна"
     )
@@ -52,5 +42,15 @@ public class AuthController {
         JwtAuthenticationDto jwtAuthenticationDto = userService.signUp(request);
         log.info("Request for sign up : {}", request.name());
         return ResponseEntity.ok(jwtAuthenticationDto);
+    }
+
+    @Operation(
+            summary = "Обновить аутентификационный токен",
+            description = "Принимает refresh, если он валиден то позволяет обновить аутентификационный токен"
+    )
+    @PostMapping("/refresh")
+    public JwtAuthenticationDto refresh(@RequestBody JwtRefreshDto refreshDto) {
+        log.info("Request for refresh token");
+        return userService.refresh(refreshDto);
     }
 }

@@ -29,7 +29,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
 
-    private void save(UserDto userDto) throws BadCredentialsException {
+    private void save(UserDto userDto) {
         if (userDto.password() == null || userDto.password().isBlank())
             throw new BadCredentialsException("Incorrect password");
 
@@ -39,21 +39,20 @@ public class UserService {
         repository.save(user);
     }
 
-    private User findByUsername(String username) throws UsernameNotFoundException {
+    private User findByUsername(String username) {
         return repository.findByName(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    private User findByCredentials(UserCredentialsDto credentialsDto) throws IllegalArgumentException {
+    private User findByCredentials(UserCredentialsDto credentialsDto) {
         User user = findByUsername(credentialsDto.name());
         if (passwordEncoder.matches(credentialsDto.password(), user.getPassword()))
             return user;
         else
-            throw new IllegalArgumentException("Incorrect password");
+            throw new BadCredentialsException("Incorrect password");
     }
 
-
-    public JwtAuthenticationDto signIn(UserCredentialsDto credentialsDto) throws UsernameNotFoundException {
+    public JwtAuthenticationDto signIn(UserCredentialsDto credentialsDto) {
         log.debug("User is trying to login : {}", credentialsDto);
         User user = findByCredentials(credentialsDto);
         log.info("User {} successfully login", user);
@@ -61,7 +60,7 @@ public class UserService {
     }
 
     @Transactional
-    public JwtAuthenticationDto signUp(RegistrationRequest request) throws BadCredentialsException {
+    public JwtAuthenticationDto signUp(RegistrationRequest request) {
         repository.findByName(request.name())
                 .ifPresent(user -> {
                     throw new BadCredentialsException("This username is already exists");
@@ -77,7 +76,7 @@ public class UserService {
         return jwtService.getJwtAuthentication(request.name());
     }
 
-    public JwtAuthenticationDto refresh(JwtRefreshDto refreshDto) throws InsufficientAuthenticationException {
+    public JwtAuthenticationDto refresh(JwtRefreshDto refreshDto) {
         log.debug("Try to refresh token: {}", refreshDto);
         String refreshToken = refreshDto.refreshToken();
         if (refreshToken != null && jwtService.validateToken(refreshToken)) {

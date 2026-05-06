@@ -7,10 +7,10 @@ import ru.nartemt.tone_engine_ver2.model.entity.user.UserRole;
 @Schema(description = "Данные запроса на регистрацию")
 public record RegistrationRequest(
         @Schema(description = "Имя пользователя")
-        @NotBlank(message = "Name is required") String name,
+        @NotBlank(message = "Заполните поле имя") String name,
 
         @Schema(description = "Пароль пользователя")
-        @NotBlank(message = "Password is required") String password,
+        @NotBlank(message = "Заполните поле пароль") String password,
 
         @Schema(description = "Роль пользователя")
         UserRole role
