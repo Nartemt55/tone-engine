@@ -2,6 +2,7 @@ package ru.nartemt.tone_engine_ver2.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class AuthController {
             description = "Принимает UserCredentialsDto, если данные верны - вход успешен"
     )
     @PostMapping("/sign-in")
-    public ResponseEntity<JwtAuthenticationDto> signIn(@RequestBody UserCredentialsDto credentialsDto) {
+    public ResponseEntity<JwtAuthenticationDto> signIn(@RequestBody @Valid UserCredentialsDto credentialsDto) {
         JwtAuthenticationDto jwtAuthenticationDto = userService.signIn(credentialsDto);
         return ResponseEntity.ok(jwtAuthenticationDto);
     }
@@ -44,7 +45,7 @@ public class AuthController {
             description = "Принимает RegistrationRequest с данными для регистрации, если данные валидны - регистрация успешна"
     )
     @PostMapping("/sign-up")
-    public ResponseEntity<JwtAuthenticationDto> signUp(@RequestBody RegistrationRequest request) {
+    public ResponseEntity<JwtAuthenticationDto> signUp(@RequestBody @Valid RegistrationRequest request) {
         JwtAuthenticationDto jwtAuthenticationDto = userService.signUp(request);
         return ResponseEntity.ok(jwtAuthenticationDto);
     }
