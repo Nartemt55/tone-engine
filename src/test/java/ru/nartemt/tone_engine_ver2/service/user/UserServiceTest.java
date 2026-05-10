@@ -77,14 +77,14 @@ public class UserServiceTest {
     }
 
     @Test
-    void singIn_IncorrectPassword_ThrowsIllegalArgumentException() {
+    void singIn_IncorrectPassword_ThrowsBadCredentialsException() {
         UserCredentialsDto userCredentialsDto = new UserCredentialsDto("John Doe", "435");
         User expectedUser = new User(userCredentialsDto.name(), "145");
 
         when(repository.findByName(userCredentialsDto.name())).thenReturn(Optional.of(expectedUser));
         when(passwordEncoder.matches(userCredentialsDto.password(), expectedUser.getPassword())).thenReturn(false);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(BadCredentialsException.class, () -> {
            userService.signIn(userCredentialsDto);
         });
     }

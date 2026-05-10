@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.security.core.AuthenticationException;
@@ -37,10 +38,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, buildHeaders(), status);
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ExceptionResponse> handleException(AccessDeniedException e) {
+        log.warn("Access denied error : {}", e.getMessage());
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        ExceptionResponse response = new ExceptionResponse(status.value(), e.getMessage());
+        return new ResponseEntity<>(response, buildHeaders(), status);
+    }
+
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ExceptionResponse> handleException(EntityNotFoundException e) {
         log.warn("Entity not found : {}", e.getMessage());
-        HttpStatus status = HttpStatus.NOT_FOUND;
+        HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
         ExceptionResponse response = new ExceptionResponse(status.value(), e.getMessage());
         return new ResponseEntity<>(response, buildHeaders(), status);
     }

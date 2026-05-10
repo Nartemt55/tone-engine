@@ -48,4 +48,5 @@ public class Preset {
     @Column(name = "warmth_target", nullable = false)
     private int warmthTarget;
 
+
 }

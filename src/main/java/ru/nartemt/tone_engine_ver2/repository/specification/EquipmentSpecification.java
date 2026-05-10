@@ -5,7 +5,6 @@ import ru.nartemt.tone_engine_ver2.model.entity.EquipmentType;
 import ru.nartemt.tone_engine_ver2.model.entity.MusicalEquipment;
 
 import java.math.BigDecimal;
-import java.util.Locale;
 
 public class EquipmentSpecification {
 

@@ -48,8 +48,8 @@ public class CartController {
 
     )
     @DeleteMapping("/items/{id}")
-    public ResponseEntity<Void> deleteFromCart(@PathVariable Long id) {
-        log.info("Request for delete from cart product : {}", id);
+    public ResponseEntity<Void> removeFromCart(@PathVariable Long id) {
+        log.info("Request for remove product : {}", id);
         cartService.removeFromCart(id);
         return ResponseEntity.noContent().build();
     }

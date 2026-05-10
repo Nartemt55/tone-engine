@@ -24,7 +24,7 @@ public class ToneAdvisorService {
 
     private final AlbumService albumService;
     private final List<AbstractEquipmentService<? extends MusicalEquipment, ? extends EquipmentRepository<? extends MusicalEquipment>>> equipmentService;
-    private final ScoringConfig.Scoring config;
+    private final ScoringConfig config;
 
     public AdvisorResponseDto getAdvisorResponseDto(Long albumId, BigDecimal budget) {
         Album album = albumService.findWithPresetsById(albumId)
@@ -39,9 +39,9 @@ public class ToneAdvisorService {
 
     private List<MusicalEquipment> getRecommendedEquipment(Album album, BigDecimal budget) {
         Map<EquipmentType, BigDecimal> budgetMap = Map.of(
-                EquipmentType.GUITAR, budget.multiply(BigDecimal.valueOf(config.getBalance().getGuitar())),
-                EquipmentType.AMPLIFIER, budget.multiply(BigDecimal.valueOf(config.getBalance().getAmplifier())),
-                EquipmentType.PEDAL, budget.multiply(BigDecimal.valueOf(config.getBalance().getPedal()))
+                EquipmentType.GUITAR, budget.multiply(BigDecimal.valueOf(config.getScoring().getBalance().getGuitar())),
+                EquipmentType.AMPLIFIER, budget.multiply(BigDecimal.valueOf(config.getScoring().getBalance().getAmplifier())),
+                EquipmentType.PEDAL, budget.multiply(BigDecimal.valueOf(config.getScoring().getBalance().getPedal()))
         );
         List<MusicalEquipment> equipmentList = new ArrayList<>();
 
