@@ -26,7 +26,7 @@ public class PedalService extends AbstractEquipmentService<Pedal, PedalRepositor
         else
             score -= 50.0;
 
-        double midMatch = 100 - Math.abs(preset.getFreqMid() - pedal.getBaseMidResponce());
+        double midMatch = 100 - Math.abs(preset.getFreqMid() - pedal.getBaseMidResponse());
         score += midMatch * config.getFrequency().getMid();
 
         return score;

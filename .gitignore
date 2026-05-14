@@ -32,6 +32,13 @@ build/
 ### VS Code ###
 .vscode/
 
-
-src/main/resources/application.properties
 *.env
+.env
+.env.local
+
+
+### Postman ###
+postman/
+*.postman_collection.json
+*.postman_environment.json
+*.postman_globals.json

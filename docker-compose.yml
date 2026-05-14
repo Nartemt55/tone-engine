@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  tone_engine_database:
+    image: postgres:17-alpine
+    container_name: tone_engine_database
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    networks:
+      - tone_network
+    volumes:
+      - tone-engine-ver1_pg_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: tone_engine_app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - tone_engine_database
+    networks:
+      - tone_network
+    environment:
+      - DB_HOST=tone_engine_database
+      - DB_NAME=${DB_NAME}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+
+networks:
+  tone_network:
+    driver: bridge
+
+volumes:
+  tone-engine-ver1_pg_data:

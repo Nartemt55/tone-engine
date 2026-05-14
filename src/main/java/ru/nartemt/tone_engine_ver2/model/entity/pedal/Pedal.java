@@ -24,7 +24,7 @@ public class Pedal extends MusicalEquipment {
     @Column(name = "gain_level", nullable = false)
     private int gainLevel;
 
-    @Column(name = "base_mid_responce")
-    private int baseMidResponce;
+    @Column(name = "base_mid_response")
+    private int baseMidResponse;
 
 }
