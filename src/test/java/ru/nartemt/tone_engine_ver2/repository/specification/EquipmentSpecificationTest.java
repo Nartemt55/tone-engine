@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.test.context.TestPropertySource;
 import ru.nartemt.tone_engine_ver2.model.entity.EquipmentType;
 import ru.nartemt.tone_engine_ver2.model.entity.guitar.Guitar;
 import ru.nartemt.tone_engine_ver2.model.entity.guitar.settings.BodyShape;
@@ -17,6 +18,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+@TestPropertySource(properties = "spring.sql.init.mode=never") // for h2 db resolve conflicts with
 public class EquipmentSpecificationTest {
 
     @Autowired

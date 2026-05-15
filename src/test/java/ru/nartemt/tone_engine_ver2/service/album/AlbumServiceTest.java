@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.TestPropertySource;
 import ru.nartemt.tone_engine_ver2.mapper.AlbumPreviewMapper;
 import ru.nartemt.tone_engine_ver2.model.dto.AlbumPreviewDto;
 import ru.nartemt.tone_engine_ver2.model.entity.album.Album;
